@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../../server/connect.php';
 include '../../server/functions.php';
 if (isset($_POST["adminlogin"])) {
@@ -10,6 +11,7 @@ if (isset($_POST["adminlogin"])) {
       $checkAdmin = $dbh->prepare("SELECT * FROM users WHERE email = ? AND password = ? AND status = ?");
       $checkAdmin->execute([$email, $password, 1]);
       if ($checkAdmin->rowCount() > 0) {
+         $_SESSION["admin"] = $email;
          header('Location: ../');
       } else {
          header('Location: ../login?status=notuser');
