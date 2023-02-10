@@ -24,11 +24,12 @@ if (isset($_POST["adminlogin"])) {
 if(isset($_POST["add_author"])) {
    $author_name = seo($_POST["author_name"]);
    $author_desc = seo($_POST["author_desc"]);
+   $lang = seo($_POST["lang__id"]);
    if(empty($author_name) OR empty($author_desc)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    } else {
-      $postAuthor = $dbh->prepare("INSERT INTO authors (author_name, author_desc) VALUES (?,?)");
-      $postAuthor->execute([$author_name, $author_desc]);
+      $postAuthor = $dbh->prepare("INSERT INTO authors (author_name, author_desc, lang_İd) VALUES (?,?,?)");
+      $postAuthor->execute([$author_name, $author_desc, $lang]);
       if($postAuthor->rowCount() > 0) {
          header('Location: ' . $_SERVER['HTTP_REFERER']);
       }
@@ -60,12 +61,13 @@ if(isset($_POST["changeAuthor"])) {
    $name = seo($_POST["author_name"]);
    $desc = seo($_POST["author_desc"]);
    $id = seo($_POST["id"]);
+   $lang__id = seo(($_POST["lang__id"]));
 
-   if(empty($name) OR empty($desc)) {
+   if(empty($name) OR empty($desc) or empty($lang__id)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
-   $updateAuthor = $dbh->prepare('UPDATE authors SET author_name=?, author_desc = ? WHERE id = ?');
-   $updateAuthor->execute([$name, $desc, $id]);
+   $updateAuthor = $dbh->prepare('UPDATE authors SET author_name=?, author_desc = ?, lang_İd = ? WHERE id = ?');
+   $updateAuthor->execute([$name, $desc, $lang__id, $id]);
    if($updateAuthor->rowCount() > 0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }  
@@ -95,11 +97,12 @@ if(isset($_GET['langproc'])) {
 
 if(isset($_POST['add__genre'])) {
    $genre_name = seo($_POST["genre_name"]);
-   if(empty($add__lang)) {
+   $lang = seo($_POST["lang__id"]);
+   if(empty($add__lang) OR empty($lang)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
-   $addLang = $dbh->prepare("INSERT INTO genres (name) VALUES (?)");
-   $addLang->execute([$genre_name]);
+   $addLang = $dbh->prepare("INSERT INTO genres (name, lang_İd) VALUES (?, ?)");
+   $addLang->execute([$genre_name, $lang]);
    if($addLang->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
