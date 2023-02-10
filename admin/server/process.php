@@ -68,6 +68,28 @@ if(isset($_POST["changeAuthor"])) {
    $updateAuthor->execute([$name, $desc, $id]);
    if($updateAuthor->rowCount() > 0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }  
+}
+
+
+if(isset($_POST['add__lang'])) {
+   $add__lang = seo($_POST["lang_name"]);
+   if(empty($add__lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
-   
+   $addLang = $dbh->prepare("INSERT INTO language (name) VALUES (?)");
+   $addLang->execute([$add__lang]);
+   if($addLang->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+if(isset($_GET['langproc'])) {
+   $id = seo($_GET["id"]);
+   $deleteFetch = $dbh->prepare("DELETE FROM language WHERE id = ?");
+   $deleteFetch->execute([$id]); 
+   if($deleteFetch->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+
 }

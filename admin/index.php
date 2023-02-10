@@ -96,7 +96,9 @@
                include "./dashboard/index.php";
             } elseif($_GET["page"]=="authors") {
                include "./authors/index.php";
-            }
+            } elseif($_GET["page"]=="languages") {
+               include "./langs/index.php";
+            } 
          ?>
 
 

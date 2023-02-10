@@ -16,7 +16,7 @@
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Əlavə et</a>
                   <div class="dropdown-menu bg-transparent border-0">
                      <a href=".?page=authors" class="dropdown-item">Müəllif</a>
-                     <a href="signup.html" class="dropdown-item">Sign Up</a>
+                     <a href=".?page=languages" class="dropdown-item">Dillər</a>
                      <a href="404.html" class="dropdown-item">404 Error</a>
                      <a href="blank.html" class="dropdown-item">Blank Page</a>
                   </div>
