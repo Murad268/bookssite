@@ -115,3 +115,12 @@ if(isset($_GET['genreproc'])) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
 }
+
+if(isset($_POST["searchGenre"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=genres&search=".$search); 
+   }
+}

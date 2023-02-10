@@ -8,9 +8,8 @@
    if(isset($_REQUEST["page"])) {
       $page = $_REQUEST["page"];
       if(isset($_REQUEST["search"])) {
-         
          $q = $_REQUEST["search"];
-         $s = "WHERE author_name LIKE '%$q%'";
+         $s = "WHERE name LIKE '%$q%'";
          $sayfalamaKosulu = "&page=$page&search=$q";
       } else {
          $sayfalamaKosulu = "&page=$page";
@@ -28,15 +27,17 @@
    $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
    $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
    $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
-
-
-   $getGenres = $dbh->prepare("SELECT * FROM genres LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
+   $getGenres = $dbh->prepare("SELECT * FROM genres $s LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
    $getGenres->execute();
    $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
-
-
 ?>
 <div class="langs__content">
+   <div class="mt-4 ms-4 author__content__form">
+      <form method="POST" action="./server/process.php">
+         <input placeholder="janr adını daxil edin" name="search" class="form-control" type="text">
+         <button type="submit" name="searchGenre" class="btn btn-dark">axtar</button>
+      </form>
+   </div>
    <div class="container-fluid pt-4 px-4">
       <div class="row g-4">
          <div class="col-sm-12 ">
