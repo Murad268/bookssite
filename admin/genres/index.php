@@ -1,5 +1,5 @@
 <?php
-   $getLangs = $dbh->prepare("SELECT * FROM language");
+   $getLangs = $dbh->prepare("SELECT * FROM genres");
    $getLangs->execute();
    $langs = $getLangs->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -23,7 +23,7 @@
                            <tr>
                               <th scope="row"><?php echo $lang["id"]?></th>
                               <td><?php echo $lang["name"]?></td>
-                              <td><a onclick="return confirm('Dili silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?langproc=delete&id=<?php echo $lang["id"]?>" class=""><i class="fa fa-window-close"></i></a></td>
+                              <td><a onclick="return confirm('Dili silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?genreproc=delete&id=<?php echo $lang["id"]?>" class=""><i class="fa fa-window-close"></i></a></td>
                            </tr>
                         <?php
                         }
@@ -43,10 +43,10 @@
                <div class="bg-secondary rounded h-100 p-4">
                      <form method="POST" action="./server/process.php">
                         <div class="mb-3"> 
-                           <input type="text" name="lang_name" class="form-control" id="exampleInputEmail1"
+                           <input type="text" name="genre_name" class="form-control" id="exampleInputEmail1"
                                  aria-describedby="emailHelp">
                         </div>
-                        <button name="add__lang" type="submit" class="btn btn-primary">Əlavə et</button>
+                        <button name="add__genre" type="submit" class="btn btn-primary">Əlavə et</button>
                      </form>
                </div>
             </div>

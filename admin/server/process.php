@@ -91,5 +91,24 @@ if(isset($_GET['langproc'])) {
    if($deleteFetch->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
+}
 
+if(isset($_POST['add__genre'])) {
+   $genre_name = seo($_POST["genre_name"]);
+   if(empty($add__lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $addLang = $dbh->prepare("INSERT INTO genres (name) VALUES (?)");
+   $addLang->execute([$genre_name]);
+   if($addLang->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+if(isset($_GET['genreproc'])) {
+   $id = seo($_GET["id"]);
+   $deleteFetch = $dbh->prepare("DELETE FROM genres WHERE id = ?");
+   $deleteFetch->execute([$id]); 
+   if($deleteFetch->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
 }
