@@ -22,7 +22,7 @@
 
 
    $sayfalamaIcinButonSayisi = 2;
-   $sayfaBasinaGosterilecek = 2;
+   $sayfaBasinaGosterilecek = 5;
    $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM authors $s");
    $toplamKayitSayisiSorgusu->execute();
    $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
@@ -52,22 +52,15 @@
          <div class="author">
             <div class="author__controlls">
                <div class="author__edit">
-                  <a href=""><i class="bi bi-pencil"></i></a>
+                  <a><i class="bi bi-pencil"></i></a>
                </div>
                <div class="author__delete">
                <a onclick="return confirm('müəllifi silmək istədiyinizdən əminsiniz?')" href="./server/process.php?author_process=delete&id=<?php echo $author['id']?>"><i class="fa fa-window-close" aria-hidden="true"></i></a>
                </div>
             </div>
-            <div class="author__name">
-               <?php
-                  echo $author["author_name"]
-               ?>
-            </div>
-            <div class="author__desc">
-               <?php
-                  echo $author["author_desc"]
-               ?>
-            </div>
+            <input type="hidden" class="author__id" value="<?php echo $author["id"]?>">
+            <div class="author__name"><?php echo $author["author_name"]?></div>
+            <div class="author__desc"><?php echo $author["author_desc"] ?> </div>
          </div>
       <?php
       }
@@ -107,4 +100,14 @@
          <button name="add_author" class="btn btn-dark">müəllifi əlavə et</button>
       </form>
    </div>
-</section>
+   <div class="changeAuthor">
+      <div class="changeAuthor__box">
+          <form method="post" action="./server/process.php">
+            <input type="text" name="author_name" placeholder="müəllifin adını dəyiş" class="form-control at-name">
+            <textarea name="author_desc" placeholder="müəllif haqqında məlumatı dəyiş" class="form-control"></textarea>
+            <input class="at-id" type="hidden" name="id">
+            <button type="submit" name="changeAuthor" class="btn btn-dark">Dəyiş</button>
+          </form>
+      </div>
+   </div>
+</section>  

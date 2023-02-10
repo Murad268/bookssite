@@ -54,3 +54,20 @@ if(isset($_POST["searchAuthor"])) {
       header("Location: ../?page=authors&search=".$search); 
    }
 }
+
+
+if(isset($_POST["changeAuthor"])) {
+   $name = seo($_POST["author_name"]);
+   $desc = seo($_POST["author_desc"]);
+   $id = seo($_POST["id"]);
+
+   if(empty($name) OR empty($desc)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $updateAuthor = $dbh->prepare('UPDATE authors SET author_name=?, author_desc = ? WHERE id = ?');
+   $updateAuthor->execute([$name, $desc, $id]);
+   if($updateAuthor->rowCount() > 0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   
+}
