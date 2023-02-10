@@ -7,7 +7,15 @@
 
    if(isset($_REQUEST["page"])) {
       $page = $_REQUEST["page"];
-      $sayfalamaKosulu = "&page=$page";
+      if(isset($_REQUEST["search"])) {
+         
+         $q = $_REQUEST["search"];
+         $s = "WHERE author_name LIKE '%$q%'";
+         $sayfalamaKosulu = "&page=$page&search=$q";
+      } else {
+         $sayfalamaKosulu = "&page=$page";
+         $s = "";
+      }
    } else {
       $sayfalamaKosulu = "";
    }
@@ -15,18 +23,24 @@
 
    $sayfalamaIcinButonSayisi = 2;
    $sayfaBasinaGosterilecek = 2;
-   $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM authors");
+   $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM authors $s");
    $toplamKayitSayisiSorgusu->execute();
    $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
    $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
    $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
 
-  $fetchAuthors = $dbh->prepare("SELECT * FROM authors LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
+  $fetchAuthors = $dbh->prepare("SELECT * FROM authors $s LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
   $fetchAuthors->execute();
   $authors = $fetchAuthors->fetchAll(PDO::FETCH_ASSOC);
-  
+
 ?>
 <section class="author__content">
+   <div class="author__content__form">
+      <form method="POST" action="./server/process.php">
+         <input placeholder="müəllif adını daxil edin" name="search" class="form-control" type="text">
+         <button type="submit" name="searchAuthor" class="btn btn-dark">axtar</button>
+      </form>
+   </div>
    <?php
       if(count($authors)<1) {?>
          <div class="alert alert-secondary" role="alert">
@@ -78,7 +92,6 @@
                         }
                      }
                      ?>
-                        
                         <li class="page-item"><a class="page-link"  href="?pagenumber=<?=$bulunanSafyaSayisi.$sayfalamaKosulu?>">&raquo;</a></li>
                      </ul>
                   </nav>

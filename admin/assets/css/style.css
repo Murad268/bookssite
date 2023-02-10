@@ -351,3 +351,10 @@
     width: max-content;
     margin: 30px auto;
 }
+.author__content__form {
+    width: 200px;
+}
+.author__content__form input{
+    background:rgb(38, 57, 77);
+    width: 100%;
+}

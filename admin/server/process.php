@@ -8,8 +8,8 @@ if (isset($_POST["adminlogin"])) {
    if (empty($email) or empty($password)) {
       header('Location: ../login?status=empty');
    } else {
-      $checkAdmin = $dbh->prepare("SELECT * FROM users WHERE email = ? AND password = ? AND status = ?");
-      $checkAdmin->execute([$email, $password, 1]);
+      $checkAdmin = $dbh->prepare("SELECT * FROM users WHERE email = ? AND password = ? AND (status = ? OR status = ?)");
+      $checkAdmin->execute([$email, $password, 1, 2]);
       if ($checkAdmin->rowCount() > 0) {
          $_SESSION["admin"] = $email;
          header('Location: ../');
@@ -43,5 +43,14 @@ if(isset($_GET["author_process"])) {
    $deleteFetch->execute([$_GET["id"]]);
    if( $deleteFetch->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+if(isset($_POST["searchAuthor"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=authors&search=".$search); 
    }
 }

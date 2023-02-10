@@ -1,6 +1,7 @@
 <?php
    session_start();
    include '../server/connect.php';
+   include './server/parameters.php';
    if (!isset($_SESSION["admin"])) {
       header("Location: ./login");
    }
