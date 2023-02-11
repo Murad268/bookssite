@@ -18,10 +18,8 @@
    } else {
       $sayfalamaKosulu = "";
    }
-
-
    $sayfalamaIcinButonSayisi = 2;
-   $sayfaBasinaGosterilecek = 1;
+   $sayfaBasinaGosterilecek = 5;
    $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM genres $s");
    $toplamKayitSayisiSorgusu->execute();
    $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();

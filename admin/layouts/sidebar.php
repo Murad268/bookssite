@@ -18,7 +18,8 @@
                      <a href=".?page=authors" class="dropdown-item">Müəllif</a>
                      <a href=".?page=languages" class="dropdown-item">Dil</a>
                      <a href=".?page=genres" class="dropdown-item">Janr</a>
-                     <a href="blank.html" class="dropdown-item">Blank Page</a>
+                     <a href=".?page=classes" class="dropdown-item">Sinif</a>
+                     <a href=".?page=subjects" class="dropdown-item">Fənn</a>
                   </div>
                </div>
             </div>

@@ -100,6 +100,10 @@
                include "./langs/index.php";
             } elseif($_GET["page"]=="genres") {
                include "./genres/index.php";
+            } elseif($_GET["page"]=="classes") {
+               include "./classes/index.php";
+            } elseif($_GET["page"]=="subjects") {
+               include "./subjects/index.php";
             }
          ?>
 

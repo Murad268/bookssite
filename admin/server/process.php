@@ -75,8 +75,9 @@ if(isset($_POST["changeAuthor"])) {
 
 
 if(isset($_POST['add__lang'])) {
-   $add__lang = seo($_POST["lang_name"]);
-   if(empty($add__lang)) {
+   $lang_name = seo($_POST["lang_name"]);
+
+   if(empty($lang_name)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
    $addLang = $dbh->prepare("INSERT INTO language (name) VALUES (?)");
@@ -98,7 +99,7 @@ if(isset($_GET['langproc'])) {
 if(isset($_POST['add__genre'])) {
    $genre_name = seo($_POST["genre_name"]);
    $lang = seo($_POST["lang__id"]);
-   if(empty($add__lang) OR empty($lang)) {
+   if(empty($genre_name) OR empty($lang)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
    $addLang = $dbh->prepare("INSERT INTO genres (name, lang_İd) VALUES (?, ?)");
@@ -122,5 +123,68 @@ if(isset($_POST["searchGenre"])) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    } else {
       header("Location: ../?page=genres&search=".$search); 
+   }
+}
+
+if(isset($_POST['add__class'])) {
+   $genre_name = seo($_POST["class_name"]);
+   $lang = seo($_POST["lang__id"]);
+   if(empty($genre_name) OR empty($lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $addClass = $dbh->prepare("INSERT INTO classes (name, lang_id) VALUES (?, ?)");
+   $addClass->execute([$genre_name, $lang]);
+   if($addClass->rowCount()>0) {
+
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+if(isset($_POST["searchClass"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=classes&search=".$search); 
+   }
+}
+if(isset($_GET['classproc'])) {
+   $id = seo($_GET["id"]);
+   $deleteFetch = $dbh->prepare("DELETE FROM classes WHERE id = ?");
+   $deleteFetch->execute([$id]); 
+   if($deleteFetch->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+
+if(isset($_POST['add__subject'])) {
+   $subject_name = seo($_POST["subject_name"]);
+   $lang = seo($_POST["lang__id"]);
+   if(empty($subject_name) OR empty($lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $addSubject = $dbh->prepare("INSERT INTO subjects (name, lang_id) VALUES (?, ?)");
+   $addSubject->execute([$subject_name, $lang]);
+   if($addSubject->rowCount()>0) {
+
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+if(isset($_POST["searchSubjects"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=subjects&search=".$search); 
+   }
+}
+if(isset($_GET['subjectproc'])) {
+   $id = seo($_GET["id"]);
+   $deleteFetch = $dbh->prepare("DELETE FROM subjects WHERE id = ?");
+   $deleteFetch->execute([$id]); 
+   if($deleteFetch->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
 }
