@@ -305,3 +305,21 @@ if(isset($_POST["searchBook"])) {
       header("Location: ../?page=addbook&search=".$search); 
    }
 }
+
+
+
+
+
+if(isset($_POST['add__type'])) {
+   $type = seo($_POST["type__name"]);
+
+   $lang = seo($_POST["lang__id"]);
+   if(empty($type) OR empty($lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $addType = $dbh->prepare("INSERT INTO types (name, lang_id) VALUES (?, ?)");
+   $addType->execute([$type, $lang]);
+   if($addType->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}

@@ -20,6 +20,7 @@
                      <a href=".?page=classes" class="dropdown-item">Sinif</a>
                      <a href=".?page=subjects" class="dropdown-item">Fənn</a>
                      <a href=".?page=specialties" class="dropdown-item">İxtisas</a>
+                     <a href=".?page=types" class="dropdown-item">Tiplər</a>
                   </div>
                </div>
                <div class="nav-item dropdown">
