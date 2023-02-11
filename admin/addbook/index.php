@@ -9,7 +9,7 @@
       $page = $_REQUEST["page"];
       if(isset($_REQUEST["search"])) {
          $q = $_REQUEST["search"];
-         $s = "WHERE name LIKE '%$q%'";
+         $s = "WHERE book_name LIKE '%$q%'";
          $sayfalamaKosulu = "&page=$page&search=$q";
       } else {
          $sayfalamaKosulu = "&page=$page";
@@ -33,7 +33,7 @@
    <div class="mt-4 ms-4 author__content__form">
       <form method="POST" action="./server/process.php">
          <input placeholder="kitab adını daxil edin" name="search" class="form-control" type="text">
-         <button type="submit" name="searchGenre" class="btn btn-dark">axtar</button>
+         <button type="submit" name="searchBook" class="btn btn-dark">axtar</button>
       </form>
    </div>
    <div class="container-fluid pt-4 px-4">

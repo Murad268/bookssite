@@ -292,3 +292,13 @@ if(isset($_GET['bookproc'])) {
 }
 
 
+
+
+if(isset($_POST["searchBook"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=addbook&search=".$search); 
+   }
+}
