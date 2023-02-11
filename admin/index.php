@@ -112,7 +112,7 @@
                include "./university/index.php";
             } elseif($_GET["page"]=="types") {
                include "./types/index.php";
-            } elseif($_GET["page"]=="manual") {
+            } elseif($_GET["page"]=="manuals") {
                include "./manual/index.php";
             }
          ?>

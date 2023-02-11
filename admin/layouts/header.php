@@ -21,6 +21,10 @@
    $geTypes = $dbh->prepare("SELECT * FROM types");
    $geTypes->execute();
    $types = $geTypes->fetchAll(PDO::FETCH_ASSOC);
+
+   $getClasses = $dbh->prepare("SELECT * FROM classes");
+   $getClasses->execute();
+   $classes = $getClasses->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

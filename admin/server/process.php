@@ -273,8 +273,8 @@ if(isset($_POST["add__book"])) {
    $postBook->execute([$book_src["name"], $book__name, $book_pdf["name"], $author__id, $sale, $book_price, $new, $lang__id]);
 
    if($postBook->rowCount() > 0) {
-      if(move_uploaded_file($book_src["tmp_name"], "../assets/img/books/".rand().$book_src["name"])) {
-         if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/books/".rand().$book_pdf["name"])) {
+      if(move_uploaded_file($book_src["tmp_name"], "../assets/img/books/".$book_src["name"])) {
+         if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/books/".$book_pdf["name"])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
          }
@@ -405,7 +405,7 @@ if(isset($_POST["add__un"])) {
    $addUn = $dbh->prepare("INSERT INTO university (name, sale, price, lang_id, book_pdf, type_id, speciality_id) VALUES (?,?,?,?,?,?,?)");
    $addUn->execute([$name, $sale, $price, $lang_id, $book_pdf["name"], $type_id, $speciality_id]);
    if($addUn->rowCount()>0) {
-      if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/uni/".rand().$book_pdf["name"]))
+      if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/uni/".$book_pdf["name"]))
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
@@ -450,6 +450,103 @@ if(isset($_POST["searchUn"])) {
       exit;
    } else {
       header("Location: ../?page=university&search=".$search); 
+      exit;
+   }
+}
+
+
+
+
+
+if(isset($_POST["add__manual"])) {
+   $book_src = $_FILES["book_src"];
+   $book_pdf = $_FILES["book_pdf"];
+   $name = seo($_POST["name"]);
+   $lang__id = seo($_POST["lang__id"]);
+   $class__id = seo($_POST["class__id"]);
+   $spec__id = seo($_POST["spec__id"]);
+   $type__id = seo($_POST["type__id"]);
+   $authors = seo($_POST["authors"]);
+   $sale = seo($_POST["sale"]);
+   $price = seo($_POST["price"]);
+   $new = seo($_POST["new"]);
+
+
+   if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($name) OR empty($lang__id) OR empty($class__id) OR empty($spec__id) OR empty($type__id) OR empty($authors) OR  empty($sale) OR  empty($price) OR  empty($new)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   }
+
+   $postManual = $dbh->prepare("INSERT INTO manuals (src, name, sale, price,  new, lang_id, book_pdf, authors, class_id, spec_id, type_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+   $postManual->execute([$book_src["name"], $name, $sale, $price, $new,  $lang__id, $book_pdf["name"], $authors, $class__id, $spec__id, $type__id]);
+
+   if($postManual->rowCount() > 0) {
+      if(move_uploaded_file($book_src["tmp_name"], "../assets/img/manuals/".$book_src["name"])) {
+         if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/manuals/".$book_pdf["name"])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+         }
+      }
+   }
+}
+
+
+if(isset($_GET["manualspec"])) {
+   echo $_GET['manualspec'];
+   
+   if($_GET['manualspec'] == "delete") {
+ 
+      $id = seo($_GET["id"]);
+      $deleteFetch = $dbh->prepare("DELETE FROM manuals WHERE id = ?");
+      $deleteFetch->execute([$id]); 
+      if($deleteFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+   } elseif($_GET['manualspec']=="addsale") {
+  
+      $id = seo($_GET["id"]);
+      $updateFetch = $dbh->prepare("UPDATE manuals SET sale = ? WHERE id = ?");
+      $updateFetch->execute([1, $id]); 
+      if($updateFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+   } elseif($_GET['manualspec']=="remsale") {
+      $id = seo($_GET["id"]);
+      $updateFetch = $dbh->prepare("UPDATE manuals SET sale = ? WHERE id = ?");
+      $updateFetch->execute([2, $id]); 
+      if($updateFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+   } elseif($_GET['manualspec']=="addnew") {
+      $id = seo($_GET["id"]);
+      $updateFetch = $dbh->prepare("UPDATE manuals SET new = ? WHERE id = ?");
+      $updateFetch->execute([1, $id]); 
+      if($updateFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+   } elseif($_GET['manualspec']=="remnew") {
+      $id = seo($_GET["id"]);
+      $updateFetch = $dbh->prepare("UPDATE manuals SET new = ? WHERE id = ?");
+      $updateFetch->execute([2, $id]); 
+      if($updateFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+   }
+}
+
+
+if(isset($_POST["searchManual"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   } else {
+      header("Location: ../?page=manuals&search=".$search); 
       exit;
    }
 }
