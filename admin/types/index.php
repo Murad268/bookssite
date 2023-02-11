@@ -33,7 +33,7 @@ $types = $getTypes->fetchAll(PDO::FETCH_ASSOC);
    <div class="mt-4 ms-4 author__content__form">
       <form method="POST" action="./server/process.php">
          <input placeholder="Sinif nömrəsini daxil edin" name="search" class="form-control" type="text">
-         <button type="submit" name="searchClass" class="btn btn-dark">axtar</button>
+         <button type="submit" name="searchType" class="btn btn-dark">axtar</button>
       </form>
    </div>
    <div class="container-fluid pt-4 px-4">
@@ -59,7 +59,7 @@ $types = $getTypes->fetchAll(PDO::FETCH_ASSOC);
                            <th scope="row"><?php echo $type["id"] ?></th>
                            <td><?php echo $type["name"] ?></td>
                            <td><?php echo $lang["name"] ?></td>
-                           <td><a onclick="return confirm('Dili silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?classproc=delete&id=<?php echo $type["id"] ?>" class=""><i class="fa fa-window-close"></i></a></td>
+                           <td><a onclick="return confirm('Tipi silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?typepros=delete&id=<?php echo $type["id"] ?>" class=""><i class="fa fa-window-close"></i></a></td>
                         </tr>
                      <?php
                      }
@@ -114,9 +114,7 @@ $types = $getTypes->fetchAll(PDO::FETCH_ASSOC);
                         }
                      ?>
                   </select>
-                  <div class="mb-3">
-                     <input type="text" name="type" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                  </div>
+                  <input type="text" name="type" class="mb-3 form-control" placeholder="Tipin adı">
                   <button name="add__type" type="submit" class="btn btn-primary">Əlavə et</button>
                </form>
             </div>

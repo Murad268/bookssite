@@ -17,6 +17,10 @@
    $geSpec = $dbh->prepare("SELECT * FROM specialties");
    $geSpec->execute();
    $specialities = $geSpec->fetchAll(PDO::FETCH_ASSOC);
+
+   $geTypes = $dbh->prepare("SELECT * FROM types");
+   $geTypes->execute();
+   $types = $geTypes->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
