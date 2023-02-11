@@ -166,6 +166,7 @@
                
                <form enctype="multipart/form-data" method="POST" action="./server/process.php">
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="book_src" id="">
+                  <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="">
                   <input type="text" name="book_name" class="mb-3 form-control" id="" placeholder="Kitabın adı">
                   <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">məlumatın dili</option>

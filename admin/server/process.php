@@ -232,17 +232,20 @@ if(isset($_POST["add__book"])) {
    $sale = seo($_POST["sale"]);
    $book_price = seo($_POST["book_price"]);
    $new = seo($_POST["new"]);
-
-   if($book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
+   $book_pdf = $_FILES["book_pdf"];
+   if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
 
-   $postBook = $dbh->prepare("INSERT INTO books (src, book_name, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?)");
-   $postBook->execute([$book_src["name"], $book__name, $author__id, $sale, $book_price, $new, $lang__id]);
+   $postBook = $dbh->prepare("INSERT INTO books (src, book_name, book_pdf, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?,?)");
+   $postBook->execute([$book_src["name"], $book__name, $book_pdf["name"], $author__id, $sale, $book_price, $new, $lang__id]);
 
    if($postBook->rowCount() > 0) {
       if(move_uploaded_file($book_src["tmp_name"], "../assets/img/books/".$book_src["name"])) {
-         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/books/".$book_src["name"])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+         }
+         
       }
    }
 }
