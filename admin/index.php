@@ -104,6 +104,8 @@
                include "./classes/index.php";
             } elseif($_GET["page"]=="subjects") {
                include "./subjects/index.php";
+            } elseif($_GET["page"]=="specialties") {
+               include "./specialties/index.php";
             }
          ?>
 

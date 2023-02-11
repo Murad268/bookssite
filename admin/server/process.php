@@ -188,3 +188,38 @@ if(isset($_GET['subjectproc'])) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
 }
+
+
+if(isset($_POST['add__specialities'])) {
+   $speciality_name = seo($_POST["speciality_name"]);
+   $lang = seo($_POST["lang__id"]);
+   if(empty($speciality_name) OR empty($lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $addSubject = $dbh->prepare("INSERT INTO specialties (name, lang_id) VALUES (?, ?)");
+   $addSubject->execute([$speciality_name, $lang]);
+   if($addSubject->rowCount()>0) {
+
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+
+if(isset($_POST["searchSpeciality"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   } else {
+      header("Location: ../?page=specialties&search=".$search); 
+   }
+}
+
+
+if(isset($_GET['specialityproc'])) {
+   $id = seo($_GET["id"]);
+   $deleteFetch = $dbh->prepare("DELETE FROM specialties WHERE id = ?");
+   $deleteFetch->execute([$id]); 
+   if($deleteFetch->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}

@@ -20,6 +20,7 @@
                      <a href=".?page=genres" class="dropdown-item">Janr</a>
                      <a href=".?page=classes" class="dropdown-item">Sinif</a>
                      <a href=".?page=subjects" class="dropdown-item">Fənn</a>
+                     <a href=".?page=specialties" class="dropdown-item">İxtisas</a>
                   </div>
                </div>
             </div>
