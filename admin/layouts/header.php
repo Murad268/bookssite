@@ -13,6 +13,10 @@
    $geAuthors = $dbh->prepare("SELECT * FROM authors");
    $geAuthors->execute();
    $authors = $geAuthors->fetchAll(PDO::FETCH_ASSOC);
+
+   $geSpec = $dbh->prepare("SELECT * FROM specialties");
+   $geSpec->execute();
+   $specialities = $geSpec->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

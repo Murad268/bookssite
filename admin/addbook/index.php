@@ -165,8 +165,10 @@
          <div class="bg-secondary rounded h-100 p-4">
                
                <form enctype="multipart/form-data" method="POST" action="./server/process.php">
-                  <input style="background: transparent" type="file" class="mb-3 form-control" name="book_src" id="">
-                  <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="">
+                  <label for="book_src" class="form-label">Məhsul şəkli</label>
+                  <input style="background: transparent" type="file" class="mb-3 form-control" name="book_src" id="book_src">
+                  <label for="book_pdf" class="form-label">Məhsul elektron</label>
+                  <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="book_pdf">
                   <input type="text" name="book_name" class="mb-3 form-control" id="" placeholder="Kitabın adı">
                   <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">məlumatın dili</option>

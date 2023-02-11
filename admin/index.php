@@ -108,6 +108,8 @@
                include "./specialties/index.php";
             } elseif($_GET["page"]=="addbook") {
                include "./addbook/index.php";
+            } elseif($_GET["page"]=="university") {
+               include "./university/index.php";
             }
          ?>
 

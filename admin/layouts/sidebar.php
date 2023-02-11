@@ -26,7 +26,7 @@
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>Materiallar</a>
                   <div class="dropdown-menu bg-transparent border-0">
                      <a href=".?page=addbook" class="dropdown-item">Kitab</a>
-                     <a href=".?page=languages" class="dropdown-item">Dil</a>
+                     <a href=".?page=university" class="dropdown-item">Universitet materialları</a>
                      <a href=".?page=genres" class="dropdown-item">Janr</a>
                      <a href=".?page=classes" class="dropdown-item">Sinif</a>
                      <a href=".?page=subjects" class="dropdown-item">Fənn</a>
