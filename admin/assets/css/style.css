@@ -401,3 +401,10 @@
     display: block;
     margin: 10px auto 0 auto;
 }
+
+.book__img {
+    width: 30px !important;
+    height: 40px !important;
+    object-fit: fill !important;
+    text-align: center;
+}

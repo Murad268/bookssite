@@ -11,11 +11,21 @@
                </div>
             </div>
             <div class="navbar-nav w-100">
-       
                <div class="nav-item dropdown">
                   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Əlavə et</a>
                   <div class="dropdown-menu bg-transparent border-0">
                      <a href=".?page=authors" class="dropdown-item">Müəllif</a>
+                     <a href=".?page=languages" class="dropdown-item">Dil</a>
+                     <a href=".?page=genres" class="dropdown-item">Janr</a>
+                     <a href=".?page=classes" class="dropdown-item">Sinif</a>
+                     <a href=".?page=subjects" class="dropdown-item">Fənn</a>
+                     <a href=".?page=specialties" class="dropdown-item">İxtisas</a>
+                  </div>
+               </div>
+               <div class="nav-item dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-book me-2"></i>Materiallar</a>
+                  <div class="dropdown-menu bg-transparent border-0">
+                     <a href=".?page=addbook" class="dropdown-item">Kitab</a>
                      <a href=".?page=languages" class="dropdown-item">Dil</a>
                      <a href=".?page=genres" class="dropdown-item">Janr</a>
                      <a href=".?page=classes" class="dropdown-item">Sinif</a>

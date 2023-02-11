@@ -223,3 +223,72 @@ if(isset($_GET['specialityproc'])) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
 }
+
+if(isset($_POST["add__book"])) {
+   $book_src = $_FILES["book_src"];
+   $book__name = seo($_POST["book_name"]);
+   $lang__id = seo($_POST["lang__id"]);
+   $author__id = seo($_POST["author__id"]);
+   $sale = seo($_POST["sale"]);
+   $book_price = seo($_POST["book_price"]);
+   $new = seo($_POST["new"]);
+
+   if($book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+
+   $postBook = $dbh->prepare("INSERT INTO books (src, book_name, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?)");
+   $postBook->execute([$book_src["name"], $book__name, $author__id, $sale, $book_price, $new, $lang__id]);
+
+   if($postBook->rowCount() > 0) {
+      if(move_uploaded_file($book_src["tmp_name"], "../assets/img/books/".$book_src["name"])) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   }
+}
+
+
+
+
+if(isset($_GET['bookproc'])) {
+   if($_GET['bookproc']=="delete") {
+      $id = seo($_GET["id"]);
+      $deleteFetch = $dbh->prepare("DELETE FROM books WHERE id = ?");
+      $deleteFetch->execute([$id]); 
+      if($deleteFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   } elseif($_GET['bookproc']=="addsale") {
+      $id = seo($_GET["id"]);
+      echo $id;
+      $updateFetch = $dbh->prepare("UPDATE books SET sale = ? WHERE id = ?");
+      $updateFetch->execute([1, $id]); 
+      if($updateFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   } elseif($_GET['bookproc']=="remsale") {
+      $id = seo($_GET["id"]);
+      $removeFetch = $dbh->prepare("UPDATE books SET sale = ? WHERE id=?");
+      $removeFetch->execute([2, $id]); 
+      if($removeFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   } elseif($_GET['bookproc']=="addnew") {
+      $id = seo($_GET["id"]);
+      $removeFetch = $dbh->prepare("UPDATE books SET new = ? WHERE id=?");
+      $removeFetch->execute([1, $id]); 
+      if($removeFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   } elseif($_GET['bookproc']=="remnew") {
+      $id = seo($_GET["id"]);
+      $removeFetch = $dbh->prepare("UPDATE books SET new = ? WHERE id=?");
+      $removeFetch->execute([2, $id]); 
+      if($removeFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   }
+
+}
+
+

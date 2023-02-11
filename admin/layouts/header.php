@@ -9,6 +9,10 @@
    $getLangs = $dbh->prepare("SELECT * FROM language");
    $getLangs->execute();
    $langs = $getLangs->fetchAll(PDO::FETCH_ASSOC);
+
+   $geAuthors = $dbh->prepare("SELECT * FROM authors");
+   $geAuthors->execute();
+   $authors = $geAuthors->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
