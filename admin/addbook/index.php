@@ -96,7 +96,7 @@
                               </td>
                               <td scope="row">
                                  <?php if($book["sale"]==1){?>
-                                    <a onclick="return confirm('Məhsul satişdan çıxarılsın?')" class="" href="./server/process.php?bookproc=remsale&id=<?php echo $book["id"]?>" >Satışdadı</a>
+                                    <a onclick="return confirm('Məhsul satişdan çıxarılsın?')" class="text-success" href="./server/process.php?bookproc=remsale&id=<?php echo $book["id"]?>" >Satışdadı</a>
                                  <?php
                                  } else {?>
                                     <a onclick="return confirm('Məhsul satişa əlavə edilsin?')" class="" href="./server/process.php?bookproc=addsale&id=<?php echo $book["id"]?>">Satışda deyil</a>
@@ -109,7 +109,7 @@
                               </td>
                               <td scope="row">
                                  <?php if($book["new"]==1){?>
-                                    <a onclick="return confirm('Məhsul yeni deyil?')" class="" href="./server/process.php?bookproc=remnew&id=<?php echo $book["id"]?>"  >Yenidir</a>
+                                    <a onclick="return confirm('Məhsul yeni deyil?')" class="text-success" href="./server/process.php?bookproc=remnew&id=<?php echo $book["id"]?>"  >Yenidir</a>
                                  <?php
                                  } else {?>
                                     <a onclick="return confirm('Məhsul yenidir?')" class="" href="./server/process.php?bookproc=addnew&id=<?php echo $book["id"]?>" >Yeni deyil</a>
