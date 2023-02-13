@@ -192,6 +192,15 @@
                   <label for="book_pdf" class="form-label">Məhsul elektron</label>
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="book_pdf">
                   <input type="text" name="name" class="mb-3 form-control" id="" placeholder="Kitabın adı">
+                  <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
+                        <option value="">Rel</option>
+                        <?php
+                           foreach($rels as $rel) {?>
+                           <option <?php echo $rel["name"] == "manual"?  "selected":"disabled" ?> value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
+                        <?php
+                        }
+                        ?>
+                  </select>
                   <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">məlumatın dili</option>
                      <?php

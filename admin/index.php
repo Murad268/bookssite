@@ -114,6 +114,10 @@
                include "./types/index.php";
             } elseif($_GET["page"]=="manuals") {
                include "./manual/index.php";
+            } elseif($_GET["page"]=="categories") {
+               include "./categories/index.php";
+            } elseif($_GET["page"]=="relationship") {
+               include "./relationship/index.php";
             }
          ?>
 

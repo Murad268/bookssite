@@ -141,6 +141,15 @@ $university = $getUnversity->fetchAll(PDO::FETCH_ASSOC);
                <label for="book_pdf" class="form-label">Məhsul elektron</label>
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="un_pdf" id="book_pdf">
                   <input placeholder="material adı" type="text" name="un_name" class="mt-3 mb-3 form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
+                        <option value="">Rel</option>
+                        <?php
+                           foreach($rels as $rel) {?>
+                           <option <?php echo $rel["name"] == "university"?  "selected":"disabled" ?> value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
+                        <?php
+                        }
+                        ?>
+                  </select>
                   <select name="sale" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">Material satışdadı</option>
                      <option value="1">hə</option>

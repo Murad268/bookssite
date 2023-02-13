@@ -25,6 +25,10 @@
    $getClasses = $dbh->prepare("SELECT * FROM classes");
    $getClasses->execute();
    $classes = $getClasses->fetchAll(PDO::FETCH_ASSOC);
+
+   $getRels = $dbh->prepare("SELECT * FROM relationship");
+   $getRels->execute();
+   $rels = $getRels->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

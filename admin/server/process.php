@@ -93,7 +93,7 @@ if(isset($_POST['add__lang'])) {
       exit;
    }
    $addLang = $dbh->prepare("INSERT INTO language (name) VALUES (?)");
-   $addLang->execute([$add__lang]);
+   $addLang->execute([$lang_name]);
    if($addLang->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -265,8 +265,9 @@ if(isset($_POST["add__book"])) {
    $new = seo($_POST["new"]);
    $book_pdf = $_FILES["book_pdf"];
    if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
+
       header('Location: ' . $_SERVER['HTTP_REFERER']);
-      exit;
+     
    }
 
    $postBook = $dbh->prepare("INSERT INTO books (src, book_name, book_pdf, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?,?)");
@@ -548,5 +549,68 @@ if(isset($_POST["searchManual"])) {
    } else {
       header("Location: ../?page=manuals&search=".$search); 
       exit;
+   }
+}
+
+
+
+
+if(isset($_POST['add__cat'])) {
+   $cat_name = seo($_POST["cat_name"]);
+   $lang = seo($_POST["lang__id"]);
+   $rel__id = seo($_POST["rel__id"]);
+   if(empty($cat_name) OR empty($lang)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   }
+   $addCat = $dbh->prepare("INSERT INTO categories (name, lang_id, rel_id) VALUES (?, ?, ?)");
+   $addCat->execute([$cat_name, $lang, $rel__id]);
+   if($addCat->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   }
+}
+
+if(isset($_GET['catpros'])) {
+   if($_GET["catpros"] == "delete") {
+      $id = seo($_GET["id"]);
+      $deleteFetch = $dbh->prepare("DELETE FROM categories WHERE id = ?");
+      $deleteFetch->execute([$id]); 
+      if($deleteFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      } 
+   }
+}
+
+
+
+if(isset($_POST['add__relationship'])) {
+   $relationship = seo($_POST["relationship"]);
+
+ 
+   if(empty($relationship)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   }
+   $addRel = $dbh->prepare("INSERT INTO relationship (name) VALUES (?)");
+   $addRel->execute([$relationship]);
+   if($addRel->rowCount()>0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+
+
+
+if(isset($_GET['relpros'])) {
+   if($_GET["relpros"] == "delete") {
+      $id = seo($_GET["id"]);
+      $deleteFetch = $dbh->prepare("DELETE FROM relationship WHERE id = ?");
+      $deleteFetch->execute([$id]); 
+      if($deleteFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      } 
    }
 }
