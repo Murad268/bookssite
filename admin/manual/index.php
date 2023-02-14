@@ -32,7 +32,7 @@
 <div class="langs__content">
    <div class="mt-4 ms-4 author__content__form">
       <form method="POST" action="./server/process.php">
-         <input placeholder="kitab adını daxil edin" name="search" class="form-control" type="text">
+         <input placeholder="Dərslik adını daxil edin" name="search" class="form-control" type="text">
          <button type="submit" name="searchManual" class="btn btn-dark">axtar</button>
       </form>
    </div>
@@ -54,8 +54,8 @@
                               <th scope="col">Dil</th>
                               <th scope="col">Müəlliflər</th>
                               <th scope="col">Sinif</th>
-                              <th scope="col">İxtisas</th>
-                              <th scope="col">Tip</th>
+                              <th scope="col">Fənn</th>
+             
                               <th scope="col">İdarə</th>
                         </tr>
                      </thead>
@@ -68,12 +68,10 @@
                               $getClass = $dbh->prepare("SELECT * FROM classes WHERE id = ?");
                               $getClass->execute([$manual["class_id"]]);
                               $class = $getClass->fetch(PDO::FETCH_ASSOC);
-                              $getSub = $dbh->prepare("SELECT * FROM specialties WHERE id = ?");
+                              $getSub = $dbh->prepare("SELECT * FROM subjects WHERE id = ?");
                               $getSub->execute([$manual["sub__id"]]);
                               $subject = $getSub->fetch(PDO::FETCH_ASSOC);
-                              $getType = $dbh->prepare("SELECT * FROM types WHERE id = ?");
-                              $getType->execute([$manual["type_id"]]);
-                              $type = $getType->fetch(PDO::FETCH_ASSOC);
+                      
                               ?>
                            <tr>
                               <td>
@@ -137,9 +135,7 @@
                               <td scope="row">
                                  <?php echo $subject["name"]?>
                               </td>
-                              <td scope="row">
-                                 <?php echo $type["name"]?>
-                              </td>
+                   
                               <td><a onclick="return confirm('Dərsliyi silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?manualspec=delete&id=<?php echo $manual["id"] ?>" class=""><i class="fa fa-window-close"></i></a></td>
                            
                            </tr>
@@ -228,15 +224,7 @@
                         }
                      ?>
                   </select>
-                  <select name="type__id" class="mb-3 form-select" aria-label="Default select example">
-                     <option value="">Tipi</option>
-                     <?php
-                        foreach ($types as $type) { ?>
-                           <option value="<?php echo $type["id"] ?>"><?php echo $type["name"] ?></option>
-                        <?php
-                        }
-                     ?>
-                  </select>
+      
                   <input placeholder="müəlliflər" style="background: transparent" type="text" class="mb-3 form-control" name="authors" id="book_src">
                   
                   <select name="sale" class="mb-3 form-select" aria-label="Default select example">
