@@ -1,5 +1,24 @@
 <?php
    session_start();
+	include './server/connect.php';
+	if(isset($_GET["q"])) {
+		$querry = $_GET["q"];
+		if($querry == "last__books") {
+			$q = $q = "ORDER BY id desc";
+		} elseif($querry == "new__books") {
+			$q = $q = "WHERE new = 1 ORDER BY id desc";
+		} elseif($querry == "most__popular") {
+			$q = $q = "ORDER BY views desc";
+		} elseif($querry == "more__liked") {
+			$q = $q = "ORDER BY views desc";
+		}
+	} else {
+		$q = "ORDER BY id desc";
+	}
+
+	$fetchBooks = $dbh->prepare("SELECT * FROM books $q");
+	$fetchBooks->execute();
+	$books = $fetchBooks->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
