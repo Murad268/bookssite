@@ -22,7 +22,6 @@
                      <a href=".?page=specialties" class="dropdown-item">İxtisas</a>
                      <a href=".?page=types" class="dropdown-item">Tiplər</a>
                      <a href=".?page=categories" class="dropdown-item">Kateqoriyalar</a>
-                     <a href=".?page=relationship" class="dropdown-item">Relationship</a>
                   </div>
                </div>
                <div class="nav-item dropdown">

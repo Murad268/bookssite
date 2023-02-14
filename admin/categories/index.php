@@ -33,7 +33,7 @@
    <div class="mt-4 ms-4 author__content__form">
       <form method="POST" action="./server/process.php">
          <input placeholder="kateqoriya adını daxil edin" name="search" class="form-control" type="text">
-         <button type="submit" name="searchGenre" class="btn btn-dark">axtar</button>
+         <button type="submit" name="searchCat" class="btn btn-dark">axtar</button>
       </form>
    </div>
    <div class="container-fluid pt-4 px-4">
@@ -45,26 +45,16 @@
                         <tr>
                               <th scope="col">#</th>
                               <th scope="col">Kateqoriya</th>
-                              <th scope="col">Rel</th>
-                              <th scope="col">Məlumat dili</th>
                               <th scope="col">İdarə</th>
                         </tr>
                      </thead>
                      <tbody>
                         <?php
-                           foreach($cats as $cat) {
-                              $getLang = $dbh->prepare("SELECT * FROM language WHERE id = ?");
-                              $getLang->execute([$cat["lang_id"]]);
-                              $lang = $getLang->fetch(PDO::FETCH_ASSOC);
-                              $getRel = $dbh->prepare("SELECT * FROM relationship WHERE id = ?");
-                              $getRel->execute([$cat["rel_id"]]);
-                              $rel = $getRel->fetch(PDO::FETCH_ASSOC);
-                              ?>
+                           foreach($cats as $cat) {?>
                               <tr>
                                  <th scope="row"><?php echo $cat["id"]?></th>
                                  <td><?php echo $cat["name"]?></td>
-                                 <td><?php echo $rel["name"]?></td>
-                                 <td><?php echo $lang["name"]?></td>
+                     
                                  <td><a onclick="return confirm('Kateqoriyanı silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?catpros=delete&id=<?php echo $cat["id"]?>" class=""><i class="fa fa-window-close"></i></a></td>
                               </tr>
                            <?php
@@ -111,24 +101,6 @@
             <div style="margin: 20px auto" class="col-xl-6">
                <div class="bg-secondary rounded h-100 p-4">
                      <form method="POST" action="./server/process.php">
-                     <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
-                        <option value="">məlumatın dili</option>
-                        <?php
-                           foreach($langs as $lang) {?>
-                           <option value="<?php echo $lang["id"]?>"><?php echo $lang["name"]?></option>
-                        <?php
-                        }
-                        ?>
-                     </select>
-                     <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
-                        <option value="">Rel</option>
-                        <?php
-                           foreach($rels as $rel) {?>
-                           <option  value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
-                        <?php
-                        }
-                        ?>
-                     </select>
                         <div class="mb-3"> 
                            <input type="text" name="cat_name" class="form-control" id="exampleInputEmail1"
                                  aria-describedby="emailHelp" placeholder="Kateqoriya adı">

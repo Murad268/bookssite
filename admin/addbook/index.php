@@ -47,6 +47,7 @@
                               <th scope="col">Şəkil</th>
                               <th scope="col">Ad</th>
                               <th scope="col">Müəllif</th>
+                              <th scope="col">Kitabın dili</th>
                               <th scope="col">Qiymət</th>
                               <th scope="col">Bəyəni</th>
                               <th scope="col">Baxış</th>
@@ -78,6 +79,9 @@
                               </td>
                               <td scope="row">
                                  <?php echo $author["author_name"]?>
+                              </td>
+                              <td scope="row">
+                                 <?php echo $lang["name"]?>
                               </td>
                               <td scope="row">
                                  <?php echo $book["price"]?>
@@ -170,17 +174,26 @@
                   <label for="book_pdf" class="form-label">Məhsul elektron</label>
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="book_pdf">
                   <input type="text" name="book_name" class="mb-3 form-control" id="" placeholder="Kitabın adı">
-                  <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
-                        <option value="">Rel</option>
+                  <select name="genre__id" class="mb-3 form-select" aria-label="Default select example">
+                        <option value="">Janr</option>
                         <?php
-                           foreach($rels as $rel) {?>
-                           <option <?php echo $rel["name"] == "genres"?  "selected":"disabled" ?> value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
+                           foreach($genres as $genre) {?>
+                           <option  value="<?php echo $genre["id"]?>"><?php echo $genre["name"]?></option>
                         <?php
                         }
                         ?>
                   </select>
+                  <select name="cat__id" class="mb-3 form-select" aria-label="Default select example">
+                     <option value="">Kateqoriya</option>
+                     <?php
+                        foreach($categories as $category) {?>
+                        <option value="<?php echo $category["id"]?>"><?php echo $category["name"]?></option>
+                     <?php
+                     }
+                     ?>
+                  </select>
                   <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
-                     <option value="">məlumatın dili</option>
+                     <option value="">Kitabın dili</option>
                      <?php
                         foreach($langs as $lang) {?>
                         <option value="<?php echo $lang["id"]?>"><?php echo $lang["name"]?></option>

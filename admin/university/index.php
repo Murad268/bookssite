@@ -141,14 +141,14 @@ $university = $getUnversity->fetchAll(PDO::FETCH_ASSOC);
                <label for="book_pdf" class="form-label">Məhsul elektron</label>
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="un_pdf" id="book_pdf">
                   <input placeholder="material adı" type="text" name="un_name" class="mt-3 mb-3 form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                  <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
-                        <option value="">Rel</option>
-                        <?php
-                           foreach($rels as $rel) {?>
-                           <option <?php echo $rel["name"] == "university"?  "selected":"disabled" ?> value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
-                        <?php
-                        }
-                        ?>
+                  <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
+                     <option value="">Kitabın dili</option>
+                     <?php
+                        foreach($langs as $lang) {?>
+                        <option value="<?php echo $lang["id"]?>"><?php echo $lang["name"]?></option>
+                     <?php
+                     }
+                     ?>
                   </select>
                   <select name="sale" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">Material satışdadı</option>
@@ -156,15 +156,6 @@ $university = $getUnversity->fetchAll(PDO::FETCH_ASSOC);
                      <option value="2">yox</option>
                   </select>
                   <input placeholder="material qiyməti" type="text" name="un_price" class="mt-3 mb-3 form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                  <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
-                     <option value="">məlumatın dili</option>
-                     <?php
-                        foreach ($langs as $lang) { ?>
-                           <option value="<?php echo $lang["id"] ?>"><?php echo $lang["name"] ?></option>
-                        <?php
-                        }
-                     ?>
-                  </select>
                   <select name="spec__id" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">İxtisası</option>
                      <?php
@@ -172,6 +163,15 @@ $university = $getUnversity->fetchAll(PDO::FETCH_ASSOC);
                            <option value="<?php echo $speciality["id"] ?>"><?php echo $speciality["name"] ?></option>
                         <?php
                         }
+                     ?>
+                  </select>
+                  <select name="cat__id" class="mb-3 form-select" aria-label="Default select example">
+                     <option value="">Kateqoriya</option>
+                     <?php
+                        foreach($categories as $category) {?>
+                        <option value="<?php echo $category["id"]?>"><?php echo $category["name"]?></option>
+                     <?php
+                     }
                      ?>
                   </select>
                   <select name="type__id" class="mb-3 form-select" aria-label="Default select example">

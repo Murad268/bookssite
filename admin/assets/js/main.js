@@ -83,16 +83,10 @@
            let name = document.querySelectorAll(".author__name")[i].textContent;
            let desc = document.querySelectorAll(".author__desc")[i].textContent;
            let id = document.querySelectorAll(".author__id")[i].value;
-           let lang_name = document.querySelectorAll(".lang_name")[i].textContent;
-           let language_name = lang_name.replace(")", "").replace("(", "")
+         
            document.querySelector(".at-name").value = name;
            document.querySelector(".changeAuthor__box textarea").value = desc;
            document.querySelector(".at-id").value = id;
-           document.querySelectorAll(".lang__id option").forEach(option => {
-                if(option.textContent==language_name) {
-                    option.setAttribute("selected", true)
-                }
-           })
         })
      })
     

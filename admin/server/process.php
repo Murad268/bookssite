@@ -27,13 +27,12 @@ if (isset($_POST["adminlogin"])) {
 if(isset($_POST["add_author"])) {
    $author_name = seo($_POST["author_name"]);
    $author_desc = seo($_POST["author_desc"]);
-   $lang = seo($_POST["lang__id"]);
    if(empty($author_name) OR empty($author_desc)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    } else {
-      $postAuthor = $dbh->prepare("INSERT INTO authors (author_name, author_desc, lang_İd) VALUES (?,?,?)");
-      $postAuthor->execute([$author_name, $author_desc, $lang]);
+      $postAuthor = $dbh->prepare("INSERT INTO authors (author_name, author_desc) VALUES (?,?)");
+      $postAuthor->execute([$author_name, $author_desc]);
       if($postAuthor->rowCount() > 0) {
          header('Location: ' . $_SERVER['HTTP_REFERER']);
          exit;
@@ -42,16 +41,21 @@ if(isset($_POST["add_author"])) {
 }
 
 if(isset($_GET["author_process"])) {
-   if(isset($_GET["id"])) {
-      header('Location: ' . $_SERVER['HTTP_REFERER']);
-      exit;
+ 
+   if($_GET["author_process"] == "delete") {
+      if(!isset($_GET["id"])) {
+    
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
+      $deleteFetch = $dbh->prepare("DELETE FROM authors WHERE id = ?");
+      $deleteFetch->execute([$_GET["id"]]);
+      if( $deleteFetch->rowCount()>0) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+         exit;
+      }
    }
-   $deleteFetch = $dbh->prepare("DELETE FROM authors WHERE id = ?");
-   $deleteFetch->execute([$_GET["id"]]);
-   if( $deleteFetch->rowCount()>0) {
-      header('Location: ' . $_SERVER['HTTP_REFERER']);
-      exit;
-   }
+
 }
 
 if(isset($_POST["searchAuthor"])) {
@@ -70,14 +74,14 @@ if(isset($_POST["changeAuthor"])) {
    $name = seo($_POST["author_name"]);
    $desc = seo($_POST["author_desc"]);
    $id = seo($_POST["id"]);
-   $lang__id = seo(($_POST["lang__id"]));
 
-   if(empty($name) OR empty($desc) or empty($lang__id)) {
+
+   if(empty($name) OR empty($desc)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $updateAuthor = $dbh->prepare('UPDATE authors SET author_name=?, author_desc = ?, lang_İd = ? WHERE id = ?');
-   $updateAuthor->execute([$name, $desc, $lang__id, $id]);
+   $updateAuthor = $dbh->prepare('UPDATE authors SET author_name=?, author_desc = ? WHERE id = ?');
+   $updateAuthor->execute([$name, $desc, $id]);
    if($updateAuthor->rowCount() > 0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -112,13 +116,12 @@ if(isset($_GET['langproc'])) {
 
 if(isset($_POST['add__genre'])) {
    $genre_name = seo($_POST["genre_name"]);
-   $lang = seo($_POST["lang__id"]);
-   if(empty($genre_name) OR empty($lang)) {
+   if(empty($genre_name)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addLang = $dbh->prepare("INSERT INTO genres (name, lang_İd) VALUES (?, ?)");
-   $addLang->execute([$genre_name, $lang]);
+   $addLang = $dbh->prepare("INSERT INTO genres (name) VALUES (?)");
+   $addLang->execute([$genre_name]);
    if($addLang->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -147,13 +150,13 @@ if(isset($_POST["searchGenre"])) {
 
 if(isset($_POST['add__class'])) {
    $genre_name = seo($_POST["class_name"]);
-   $lang = seo($_POST["lang__id"]);
-   if(empty($genre_name) OR empty($lang)) {
+
+   if(empty($genre_name)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addClass = $dbh->prepare("INSERT INTO classes (name, lang_id) VALUES (?, ?)");
-   $addClass->execute([$genre_name, $lang]);
+   $addClass = $dbh->prepare("INSERT INTO classes (name) VALUES (?)");
+   $addClass->execute([$genre_name]);
    if($addClass->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -184,13 +187,12 @@ if(isset($_GET['classproc'])) {
 
 if(isset($_POST['add__subject'])) {
    $subject_name = seo($_POST["subject_name"]);
-   $lang = seo($_POST["lang__id"]);
-   if(empty($subject_name) OR empty($lang)) {
+   if(empty($subject_name)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addSubject = $dbh->prepare("INSERT INTO subjects (name, lang_id) VALUES (?, ?)");
-   $addSubject->execute([$subject_name, $lang]);
+   $addSubject = $dbh->prepare("INSERT INTO subjects (name) VALUES (?)");
+   $addSubject->execute([$subject_name]);
    if($addSubject->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -220,13 +222,12 @@ if(isset($_GET['subjectproc'])) {
 
 if(isset($_POST['add__specialities'])) {
    $speciality_name = seo($_POST["speciality_name"]);
-   $lang = seo($_POST["lang__id"]);
-   if(empty($speciality_name) OR empty($lang)) {
+   if(empty($speciality_name)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addSubject = $dbh->prepare("INSERT INTO specialties (name, lang_id) VALUES (?, ?)");
-   $addSubject->execute([$speciality_name, $lang]);
+   $addSubject = $dbh->prepare("INSERT INTO specialties (name) VALUES (?)");
+   $addSubject->execute([$speciality_name]);
    if($addSubject->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
@@ -264,14 +265,15 @@ if(isset($_POST["add__book"])) {
    $book_price = seo($_POST["book_price"]);
    $new = seo($_POST["new"]);
    $book_pdf = $_FILES["book_pdf"];
-   if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
+   $genre__id = seo($_POST["genre__id"]);
+   $cat__id  = seo($_POST["cat__id"]);
+   if(empty($cat__id) OR empty($cat__id) OR $book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($book__name) OR empty($lang__id) OR empty($author__id) OR empty($sale) OR empty($book__name) OR empty($book_price) OR  empty($new)) {
 
       header('Location: ' . $_SERVER['HTTP_REFERER']);
-     
    }
 
-   $postBook = $dbh->prepare("INSERT INTO books (src, book_name, book_pdf, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?,?)");
-   $postBook->execute([$book_src["name"], $book__name, $book_pdf["name"], $author__id, $sale, $book_price, $new, $lang__id]);
+   $postBook = $dbh->prepare("INSERT INTO books (genre__id, cat__id, src, book_name, book_pdf, author_id, sale, price, new, lang_id) VALUES (?,?,?,?,?,?,?,?,?,?)");
+   $postBook->execute([$genre__id,  $cat__id, $book_src["name"], $book__name, $book_pdf["name"], $author__id, $sale, $book_price, $new, $lang__id]);
 
    if($postBook->rowCount() > 0) {
       if(move_uploaded_file($book_src["tmp_name"], "../assets/img/books/".$book_src["name"])) {
@@ -351,14 +353,12 @@ if(isset($_POST["searchBook"])) {
 
 if(isset($_POST['add__type'])) {
    $type = seo($_POST["type"]);
-   $lang = seo($_POST["lang__id"]);
- 
-   if(empty($type) OR empty($lang)) {
+   if(empty($type) ) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addType = $dbh->prepare("INSERT INTO types (name, lang_id) VALUES (?, ?)");
-   $addType->execute([$type, $lang]);
+   $addType = $dbh->prepare("INSERT INTO types (name) VALUES (?)");
+   $addType->execute([$type]);
    if($addType->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
    }
@@ -397,14 +397,14 @@ if(isset($_POST["add__un"])) {
    $book_pdf = $_FILES["un_pdf"];
    $type_id = seo($_POST["type__id"]);
    $speciality_id = seo($_POST["spec__id"]);
-
-   if(empty($name) OR empty($sale) OR empty($price) OR empty($lang_id) OR $book_pdf["error"] == 4 OR empty($type_id) OR empty($speciality_id)) {
+   $cat__id = seo($_POST["cat__id"]);
+   if(empty($cat__id) OR empty($name) OR empty($sale) OR empty($price) OR empty($lang_id) OR $book_pdf["error"] == 4 OR empty($type_id) OR empty($speciality_id)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
 
-   $addUn = $dbh->prepare("INSERT INTO university (name, sale, price, lang_id, book_pdf, type_id, speciality_id) VALUES (?,?,?,?,?,?,?)");
-   $addUn->execute([$name, $sale, $price, $lang_id, $book_pdf["name"], $type_id, $speciality_id]);
+   $addUn = $dbh->prepare("INSERT INTO university (name, cat__id, sale, price, lang_id, book_pdf, type_id, speciality_id) VALUES (?,?,?,?,?,?,?,?)");
+   $addUn->execute([$name, $cat__id, $sale, $price, $lang_id, $book_pdf["name"], $type_id, $speciality_id]);
    if($addUn->rowCount()>0) {
       if(move_uploaded_file($book_pdf["tmp_name"], "../assets/pdfs/uni/".$book_pdf["name"]))
       header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -557,20 +557,29 @@ if(isset($_POST["searchManual"])) {
 
 if(isset($_POST['add__cat'])) {
    $cat_name = seo($_POST["cat_name"]);
-   $lang = seo($_POST["lang__id"]);
-   $rel__id = seo($_POST["rel__id"]);
-   if(empty($cat_name) OR empty($lang)) {
+
+   if(empty($cat_name) ) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addCat = $dbh->prepare("INSERT INTO categories (name, lang_id, rel_id) VALUES (?, ?, ?)");
-   $addCat->execute([$cat_name, $lang, $rel__id]);
+   $addCat = $dbh->prepare("INSERT INTO categories (name) VALUES (?)");
+   $addCat->execute([$cat_name]);
    if($addCat->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
 }
 
+if(isset($_POST["searchCat"])) {
+   $search = seo($_POST["search"]);
+   if(empty($search)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      exit;
+   } else {
+      header("Location: ../?page=categories&search=".$search); 
+      exit;
+   }
+}
 if(isset($_GET['catpros'])) {
    if($_GET["catpros"] == "delete") {
       $id = seo($_GET["id"]);

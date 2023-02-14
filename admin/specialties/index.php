@@ -45,20 +45,15 @@ $classes = $getSpecialties->fetchAll(PDO::FETCH_ASSOC);
                      <tr>
                         <th scope="col">#</th>
                         <th scope="col">Sinif</th>
-                        <th scope="col">Məlumat dili</th>
                         <th scope="col">İdarə</th>
                      </tr>
                   </thead>
                   <tbody>
                      <?php
-                     foreach ($classes as $class) {
-                        $getLang = $dbh->prepare("SELECT * FROM language WHERE id = ?");
-                        $getLang->execute([$class["lang_id"]]);
-                        $lang = $getLang->fetch(PDO::FETCH_ASSOC); ?>
+                     foreach ($classes as $class) {?>
                         <tr>
                            <th scope="row"><?php echo $class["id"] ?></th>
                            <td><?php echo $class["name"] ?></td>
-                           <td><?php echo $lang["name"] ?></td>
                            <td><a onclick="return confirm('Dili silmək istədiyinizdən əminsinizmi?')" href="./server/process.php?specialityproc=delete&id=<?php echo $class["id"] ?>" class=""><i class="fa fa-window-close"></i></a></td>
                         </tr>
                      <?php
@@ -105,15 +100,6 @@ $classes = $getSpecialties->fetchAll(PDO::FETCH_ASSOC);
          <div style="margin: 20px auto" class="col-xl-6">
             <div class="bg-secondary rounded h-100 p-4">
                <form method="POST" action="./server/process.php">
-                  <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
-                     <option value="">məlumatın dili</option>
-                     <?php
-                        foreach ($langs as $lang) { ?>
-                           <option value="<?php echo $lang["id"] ?>"><?php echo $lang["name"] ?></option>
-                        <?php
-                        }
-                     ?>
-                  </select>
                   <div class="mb-3">
                      <input type="text" name="speciality_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                   </div>

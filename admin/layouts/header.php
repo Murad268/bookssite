@@ -26,9 +26,13 @@
    $getClasses->execute();
    $classes = $getClasses->fetchAll(PDO::FETCH_ASSOC);
 
-   $getRels = $dbh->prepare("SELECT * FROM relationship");
-   $getRels->execute();
-   $rels = $getRels->fetchAll(PDO::FETCH_ASSOC);
+   $getCategories = $dbh->prepare("SELECT * FROM categories");
+   $getCategories->execute();
+   $categories = $getCategories->fetchAll(PDO::FETCH_ASSOC);
+
+   $getGenres = $dbh->prepare("SELECT * FROM genres");
+   $getGenres->execute();
+   $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

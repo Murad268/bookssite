@@ -49,9 +49,7 @@
       <?php
       }
       foreach($authors as $author) {
-         $getLang = $dbh->prepare("SELECT * FROM language WHERE id = ?");
-         $getLang->execute([$author["lang_İd"]]);
-         $lang = $getLang->fetch(PDO::FETCH_ASSOC);?>
+    ?>
          <div class="author">
             <div class="author__controlls">
                <div class="author__edit">
@@ -62,7 +60,7 @@
                </div>
             </div>
             <input type="hidden" class="author__id" value="<?php echo $author["id"]?>">
-            <div class="author__name"><?php echo $author["author_name"]?> </div><span class="lang_name"><?php echo '('.$lang["name"].')'?></span>
+            <div class="author__name"><?php echo $author["author_name"]?> </div>
             <div class="author__desc"><?php echo $author["author_desc"] ?> </div>
          </div>
       <?php
@@ -98,15 +96,6 @@
    <div class="add__author">
       <form method="post" action="./server/process.php">
          <input name="author_name" type="text" class="form-control" placeholder="Müəllifin adı">
-            <select name="lang__id" class="mb-3 mt-3 form-select" aria-label="Default select example">
-               <option selected>məlumatın dili</option>
-               <?php
-                  foreach($langs as $lang) {?>
-                  <option value="<?php echo $lang["id"]?>"><?php echo $lang["name"]?></option>
-               <?php
-               }
-               ?>
-            </select>
          <textarea name="author_desc" class="mt-3 form-control" placeholder="müəllif haqqında"></textarea>
          <button name="add_author" class="btn btn-dark">müəllifi əlavə et</button>
       </form>
@@ -115,15 +104,6 @@
       <div class="changeAuthor__box">
           <form method="post" action="./server/process.php">
             <input type="text" name="author_name" placeholder="müəllifin adını dəyiş" class="form-control at-name">
-            <select name="lang__id" class="lang__id mb-3 mt-3 form-select" aria-label="Default select example">
-               <option value="">məlumatın dili</option>
-               <?php
-                  foreach($langs as $lang) {?>
-                  <option value="<?php echo $lang["id"]?>"><?php echo $lang["name"]?></option>
-               <?php
-               }
-               ?>
-            </select>
             <textarea name="author_desc" placeholder="müəllif haqqında məlumatı dəyiş" class="form-control"></textarea>
             <input class="at-id" type="hidden" name="id">
             <button type="submit" name="changeAuthor" class="btn btn-dark">Dəyiş</button>
