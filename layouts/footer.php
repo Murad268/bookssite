@@ -69,13 +69,15 @@
 			function scrollToElement(element) {
 				element.scrollIntoView({ behavior: 'smooth' });
 			}
-			const myElement = document.querySelector('.interesting__title');
-			<?php
-				if($_GET["q"]) {?>
-					scrollToElement(myElement);
-				<?php
-				}
-			?>
+
+				const myElement = document.querySelector('.interesting__title');
+
+				
 		</script>
+		<?php
+			if($_GET["q"]) {
+				echo '<script>scrollToElement(myElement);</script>';
+			}
+		?>
 	</body>
 </html>

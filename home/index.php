@@ -49,18 +49,66 @@
                   $getAuthor = $dbh->prepare("SELECT * FROM authors WHERE id = ?");
                   $getAuthor->execute([$book["author_id"]]);
                   $author = $getAuthor->fetch(PDO::FETCH_ASSOC);
+                  $star;
+                  $text;
+                  if($book["countofb"] == 0) {
+                     $star = "<div class='no-star'>Hələ ki, heç bir istifadəçi bu kitaba qiymət verməyib</div>";
+                     $text = $star;
+                  } else {
+                     $star = $book["stars"]/$book["countofb"];
+                     if($star<=1) {
+                        $text = `
+                        <div class="interesting__book__raiting">
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                        `;
+                     } elseif($star<=2) {
+                        $text = `
+                        <div class="interesting__book__raiting">
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                        `;
+                     } elseif($star<=3) {
+                        $text = `
+                        <div class="interesting__book__raiting">
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                        `;
+                     } elseif($star<=4) {
+                        $text = `
+                        <div class="interesting__book__raiting">
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                 
+                        </div>
+                        `;
+                     } elseif($star<=5) {
+                        $text = `
+                        <div class="interesting__book__raiting">
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                        `;
+                     }
+                  }
                   ?>
                   <a class="interesting__book">
                      <div class="interesting__book__img">
                         <img src="admin/assets/img/books/<?php echo $book["src"]?>" alt="" />
                      </div>
-                     <div class="interesting__book__raiting">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                     </div>
+                        <?php
+                           echo $star;
+                        ?>
+                     
+                 
                      <div class="interesting__book__author"><?php echo $author["author_name"]?></div>
                      <div class="interesting__book__name"><?php echo $book["book_name"]?></div>
                   </a>
