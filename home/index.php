@@ -43,8 +43,10 @@
                }
          ?>
 			<div class="interesting__wrapper container">
+            <div title="mövcud kateqoriyaya uyğun bütün kitablar" class="inseresting__arrow">
+               <a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+            </div>
 				<?php
-          
                foreach($books as $book) {
                   $getAuthor = $dbh->prepare("SELECT * FROM authors WHERE id = ?");
                   $getAuthor->execute([$book["author_id"]]);
@@ -107,8 +109,6 @@
                         <?php
                            echo $star;
                         ?>
-                     
-                 
                      <div class="interesting__book__author"><?php echo $author["author_name"]?></div>
                      <div class="interesting__book__name"><?php echo $book["book_name"]?></div>
                   </a>

@@ -433,8 +433,18 @@ table {
    display: grid;
    grid-template-columns: repeat(5, 1fr);
    grid-gap: 30px;
+   position: relative;
 }
-
+.inseresting__arrow {
+   position: absolute;
+   bottom: -30px;
+   right: 0;
+}
+.inseresting__arrow a {
+   text-decoration: none;
+   color: black;
+   font-size: 30px;
+}
 .interesting__book__img {
    width: 90%;
    height: 290px;
