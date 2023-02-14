@@ -33,6 +33,10 @@
    $getGenres = $dbh->prepare("SELECT * FROM genres");
    $getGenres->execute();
    $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
+
+   $getSubjects = $dbh->prepare("SELECT * FROM subjects");
+   $getSubjects->execute();
+   $subjects = $getSubjects->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

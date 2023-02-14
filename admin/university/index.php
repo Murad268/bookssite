@@ -32,7 +32,7 @@ $university = $getUnversity->fetchAll(PDO::FETCH_ASSOC);
 <div class="langs__content">
    <div class="mt-4 ms-4 author__content__form">
       <form method="POST" action="./server/process.php">
-         <input placeholder="Fənn adını daxil edin" name="search" class="form-control" type="text">
+         <input placeholder="Material adını daxil edin" name="search" class="form-control" type="text">
          <button type="submit" name="searchUn" class="btn btn-dark">axtar</button>
       </form>
    </div>

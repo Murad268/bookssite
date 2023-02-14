@@ -68,9 +68,9 @@
                               $getClass = $dbh->prepare("SELECT * FROM classes WHERE id = ?");
                               $getClass->execute([$manual["class_id"]]);
                               $class = $getClass->fetch(PDO::FETCH_ASSOC);
-                              $getSpec = $dbh->prepare("SELECT * FROM specialties WHERE id = ?");
-                              $getSpec->execute([$manual["spec_id"]]);
-                              $spec = $getSpec->fetch(PDO::FETCH_ASSOC);
+                              $getSub = $dbh->prepare("SELECT * FROM specialties WHERE id = ?");
+                              $getSub->execute([$manual["sub__id"]]);
+                              $subject = $getSub->fetch(PDO::FETCH_ASSOC);
                               $getType = $dbh->prepare("SELECT * FROM types WHERE id = ?");
                               $getType->execute([$manual["type_id"]]);
                               $type = $getType->fetch(PDO::FETCH_ASSOC);
@@ -135,7 +135,7 @@
                                  <?php echo $class["name"]?>
                               </td>
                               <td scope="row">
-                                 <?php echo $spec["name"]?>
+                                 <?php echo $subject["name"]?>
                               </td>
                               <td scope="row">
                                  <?php echo $type["name"]?>
@@ -192,14 +192,14 @@
                   <label for="book_pdf" class="form-label">Məhsul elektron</label>
                   <input style="background: transparent" type="file" class="mb-3 form-control" name="book_pdf" id="book_pdf">
                   <input type="text" name="name" class="mb-3 form-control" id="" placeholder="Kitabın adı">
-                  <select name="rel__id" class="mb-3 form-select" aria-label="Default select example">
-                        <option value="">Rel</option>
-                        <?php
-                           foreach($rels as $rel) {?>
-                           <option <?php echo $rel["name"] == "manual"?  "selected":"disabled" ?> value="<?php echo $rel["id"]?>"><?php echo $rel["name"]?></option>
-                        <?php
-                        }
-                        ?>
+                  <select name="cat__id" class="mb-3 form-select" aria-label="Default select example">
+                     <option value="">Kateqoriya</option>
+                     <?php
+                        foreach($categories as $category) {?>
+                        <option value="<?php echo $category["id"]?>"><?php echo $category["name"]?></option>
+                     <?php
+                     }
+                     ?>
                   </select>
                   <select name="lang__id" class="mb-3 form-select" aria-label="Default select example">
                      <option value="">məlumatın dili</option>
@@ -219,11 +219,11 @@
                      }
                      ?>
                   </select>
-                  <select name="spec__id" class="mb-3 form-select" aria-label="Default select example">
-                     <option value="">İxtisası</option>
+                  <select name="sub__id" class="mb-3 form-select" aria-label="Default select example">
+                     <option value="">Fənn</option>
                      <?php
-                        foreach ($specialities as $speciality) { ?>
-                           <option value="<?php echo $speciality["id"] ?>"><?php echo $speciality["name"] ?></option>
+                        foreach ($subjects as $subject) { ?>
+                           <option value="<?php echo $subject["id"] ?>"><?php echo $subject["name"] ?></option>
                         <?php
                         }
                      ?>

@@ -465,21 +465,21 @@ if(isset($_POST["add__manual"])) {
    $name = seo($_POST["name"]);
    $lang__id = seo($_POST["lang__id"]);
    $class__id = seo($_POST["class__id"]);
-   $spec__id = seo($_POST["spec__id"]);
+   $sub__id = seo($_POST["sub__id"]);
    $type__id = seo($_POST["type__id"]);
    $authors = seo($_POST["authors"]);
    $sale = seo($_POST["sale"]);
    $price = seo($_POST["price"]);
    $new = seo($_POST["new"]);
+   $cat__id = seo($_POST["cat__id"]);
 
-
-   if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($name) OR empty($lang__id) OR empty($class__id) OR empty($spec__id) OR empty($type__id) OR empty($authors) OR  empty($sale) OR  empty($price) OR  empty($new)) {
+   if($book_pdf["error"] == 4 OR $book_src["error"] == 4 OR empty($name) OR empty($lang__id) OR empty($class__id) OR empty($sub__id) OR empty($type__id) OR empty($authors) OR  empty($sale) OR  empty($price) OR  empty($new)) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
 
-   $postManual = $dbh->prepare("INSERT INTO manuals (src, name, sale, price,  new, lang_id, book_pdf, authors, class_id, spec_id, type_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-   $postManual->execute([$book_src["name"], $name, $sale, $price, $new,  $lang__id, $book_pdf["name"], $authors, $class__id, $spec__id, $type__id]);
+   $postManual = $dbh->prepare("INSERT INTO manuals (cat__id, src, name, sale, price,  new, lang_id, book_pdf, authors, class_id, sub__id, type_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+   $postManual->execute([$cat__id, $book_src["name"], $name, $sale, $price, $new,  $lang__id, $book_pdf["name"], $authors, $class__id, $sub__id, $type__id]);
 
    if($postManual->rowCount() > 0) {
       if(move_uploaded_file($book_src["tmp_name"], "../assets/img/manuals/".$book_src["name"])) {
