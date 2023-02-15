@@ -98,4 +98,21 @@ if(isset($_GET["pros"])) {
       header('Location: ../');
    }
 }
+
+
+if(isset($_POST['searchInBooks'])) {
+   $page = $_POST["page"];
+   $cat = $_POST["cat"];
+   $prev_url = $_SERVER['HTTP_REFERER'];
+   $search = seo($_POST["search"]);
+   $lang_id = seo($_POST["lang_id"]);
+   $genre_id = seo($_POST["genre_id"]);
+   if(!empty($prev_url)) {
+      header("Location:  ../?page=$page&category=$cat&search=$search&genre_id=$genre_id&lang_id=$lang_id");
+   }
+}
+
+
+
 ?>
+

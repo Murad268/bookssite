@@ -979,6 +979,7 @@ table {
  .manual a {
    text-decoration: none;
  }
- .manual .interesting__book__raiting {
-
+ .interesting__wrapper__filter {
+   margin: 0 auto;
+   width: max-content;
  }
