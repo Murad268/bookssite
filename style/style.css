@@ -983,3 +983,13 @@ table {
    margin: 0 auto;
    width: max-content;
  }
+.interesting__wrapper__filter form {
+   display: flex;
+   align-items: center;
+   margin: 0 auto;
+}
+.interesting__wrapper__filter input, .interesting__wrapper__filter select {
+   height: 30px;
+   margin-right: 10px;
+   font-size: 13px;
+}

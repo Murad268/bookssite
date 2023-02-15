@@ -11,7 +11,17 @@
 
 
 
-
+   $current_url = 'http';
+   if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+       $current_url .= "s";
+   }
+   $current_url .= "://";
+   if($_SERVER['SERVER_PORT'] != '80') {
+       $current_url .= $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
+   } else {
+       $current_url .= $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+   }
+   
 
 
 
@@ -42,12 +52,36 @@
 
    <?php
       if ($_GET["category"] == "books") { 
-         $sayfalamaKosulu = "&page=".$page."&category=$cat";
+         $sayfalamaKosulu = "page=".$page."&category=$cat";
          if(isset($_GET["search"])) {
             $s = $_GET["search"];
             $l = $_GET["lang_id"];
             $g = $_GET["genre_id"];
             $sayfalamaKosulu .= "&search=$s&genre_id=$g&lang_id=$l";
+         }
+         if(isset($_GET["filter"])) {
+            $f = $_GET["filter"];
+            $sayfalamaKosulu .= "&search=$s&genre_id=$g&lang_id=$l&filter=$f";
+            if($_GET["filter"]=="popular") {
+               $fq = "ORDER BY views DESC";
+            } elseif($_GET["filter"]=="likes") {
+               $fq = "ORDER BY views DESC";
+            } elseif($_GET["filter"]=="onsale") {
+               $fq = "AND sale=1";
+            } elseif($_GET["filter"]=="popularinonsale") {
+               $fq = "AND sale = 1 ORDER BY views DESC";
+            } elseif($_GET["filter"]=="morelikesinonsale") {
+               $fq = "AND sale = 1 ORDER BY views DESC";
+               // morelikesinonsale
+            } elseif($_GET["filter"]=="fromceaptoexpensive") {
+               $fq = "AND sale=1 ORDER BY price ASC";
+            } elseif($_GET["filter"]=="fromexpensivetocheap") {
+               $fq = "AND sale=1 ORDER BY price DESC";
+            } elseif($_GET["filter"]=="newbooks") {
+               $fq = "AND new=1 ORDER BY price DESC";
+            }
+         } else {
+            $fq="";
          }
          if(!empty($_GET["search"])) {
             $q = $_GET["search"];
@@ -73,33 +107,24 @@
       
       
          $sayfalamaIcinButonSayisi = 2;
-         $sayfaBasinaGosterilecek = 1;
-         $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g");
+         $sayfaBasinaGosterilecek = 8;
+         $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g $fq");
          $toplamKayitSayisiSorgusu->execute([$category["id"]]);
          $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
          $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
          $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
           
-         $getBooks = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
+         $getBooks = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g $fq LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
          $getBooks->execute([$category["id"]]);
          $books = $getBooks->fetchAll(PDO::FETCH_ASSOC);
       ?>
-         <?php
-         if (count($books) < 1) { ?>
-            <div class="no__book">
-               <div class="alert alert-warning" role="alert">
-                  Axtarılan tipdə kitab yoxdur və ya bölmə düzənlənir
-               </div>
-            </div>
-         <?php
-         }
-         ?>
+  
          <div class="interesting__wrapper__filter">
             <form action="./server/process.php" method="post" >
-               <input type="text" name="search" placeholder="kitabın adını daxil edin">
-               <input value="<?php echo $page?>" type="hidden" name="page">
-               <input value="<?php echo $cat?>" type="hidden" name="cat">
-               <select name="lang_id" id="">
+               <input class="form-control" type="text" name="search" placeholder="kitabın adını daxil edin">
+               <input class="form-control" value="<?php echo $page?>" type="hidden" name="page">
+               <input class="form-control" value="<?php echo $cat?>" type="hidden" name="cat">
+               <select class="form-control" name="lang_id" id="">
                   <option value="">Dil</option>
                   <?php
                      foreach($langs as $lang) {?>
@@ -108,7 +133,7 @@
                      }
                   ?>
                </select>
-               <select name="genre_id" id="">
+               <select class="form-control" name="genre_id" id="">
                   <option value="">Janr</option>
                   <?php
                      foreach($categories as $category) {?>
@@ -118,15 +143,29 @@
                   ?>
                </select>
                <button type="submit" name="searchInBooks" class="btn btn-success">axtar</button>
-               <a href="" class="btn btn-primary">Populyarlığa görə sırala</a>
-               <a href="" class="btn btn-success">Bəyəniyə görə sırala</a>
-               <a href="" class="btn btn-danger">Satışdadı</a>
-               <a href="" class="btn btn-dark">Uzudan bahaya</a>
-               <a href="" class="btn btn-warning">Bahadan ucuza</a>
-               <a href="" class="btn btn-primary">Yeni kitablar</a>
             </form>  
-
+          
          </div>
+            <div class="mt-3 interesting__wrapper__filter">
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=popular" class="btn btn-primary">Populyarlığa görə sırala</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=likes" class="btn btn-success">Bəyəniyə görə sırala</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=onsale" class="btn btn-danger">Satışdadı</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=popularinonsale" class="btn btn-danger">Satışda olanlar arasında ən populyarları</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=morelikesinonsale" class="btn btn-danger">Satışda olanlar arasında ən çox bəyənilənləri</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=fromceaptoexpensive" class="btn btn-dark">Uzudan bahaya</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=fromexpensivetocheap" class="btn btn-warning">Bahadan ucuza</a>
+               <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=newbooks" class="btn btn-primary">Yeni kitablar</a>
+            </div>
+         <?php
+            if (count($books) < 1) { ?>
+               <div class="no__book">
+                  <div class="alert alert-warning" role="alert">
+                     Axtarılan tipdə kitab yoxdur və ya bölmə düzənlənir
+                  </div>
+               </div>
+            <?php
+            }
+         ?>
          <div class="interesting__wrapper container">
          
             <?php
