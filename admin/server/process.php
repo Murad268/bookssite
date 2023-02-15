@@ -120,7 +120,7 @@ if(isset($_POST['add__genre'])) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addLang = $dbh->prepare("INSERT INTO genres (name) VALUES (?)");
+   $addLang = $dbh->prepare("INSERT INTO books (name) VALUES (?)");
    $addLang->execute([$genre_name]);
    if($addLang->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -129,7 +129,7 @@ if(isset($_POST['add__genre'])) {
 }
 if(isset($_GET['genreproc'])) {
    $id = seo($_GET["id"]);
-   $deleteFetch = $dbh->prepare("DELETE FROM genres WHERE id = ?");
+   $deleteFetch = $dbh->prepare("DELETE FROM books WHERE id = ?");
    $deleteFetch->execute([$id]); 
    if($deleteFetch->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -558,13 +558,13 @@ if(isset($_POST["searchManual"])) {
 
 if(isset($_POST['add__cat'])) {
    $cat_name = seo($_POST["cat_name"]);
-
+   $slug = seo($_POST["slug"]);
    if(empty($cat_name) ) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;
    }
-   $addCat = $dbh->prepare("INSERT INTO categories (name) VALUES (?)");
-   $addCat->execute([$cat_name]);
+   $addCat = $dbh->prepare("INSERT INTO categories (name, slug) VALUES (?,?)");
+   $addCat->execute([$cat_name, $slug]);
    if($addCat->rowCount()>0) {
       header('Location: ' . $_SERVER['HTTP_REFERER']);
       exit;

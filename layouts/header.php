@@ -19,6 +19,18 @@
 	$fetchBooks = $dbh->prepare("SELECT * FROM books $q");
 	$fetchBooks->execute();
 	$books = $fetchBooks->fetchAll(PDO::FETCH_ASSOC);
+
+	$getCategories = $dbh->prepare("SELECT * FROM categories");
+	$getCategories->execute();
+	$categories = $getCategories->fetchAll(PDO::FETCH_ASSOC);
+
+	if(isset($_GET["category"])) {
+		$cat = $_GET["category"];
+
+		$getBooks = $dbh->prepare("SELECT * FROM $cat");
+		$getBooks->execute();
+		$gettedBooks = $getBooks->fetchAll(PDO::FETCH_ASSOC);
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,139 +83,146 @@
 		<title>Document</title>
 	</head>
 	<body>
-		<header class="header">
-			<div class="header__top">
-				<div class="container">
-					<div class="header__top__left">
-						<div class="header__top__left__lang">
-							<div class="header__top__left__lang__icon">
-								<img src="./assets/icons/az.png" alt="" />
-							</div>
-							<div class="header__top__left__lang__name">Azərbaycan</div>
-							<div class="header__top__left__lang__arrow">
-								<i class="fa fa-angle-down" aria-hidden="true"></i>
-							</div>
-							<div class="header__top__left__lang__hover">
-								<div class="header__top__left__lang">
-									<div class="header__top__left__lang__icon">
-										<img src="./assets/icons/rus.png" alt="" />
+		<?php
+			if(!isset($_GET["category"])) {?>			
+			<header class="header">
+				<div class="header__top">
+					<div class="container">
+						<div class="header__top__left">
+							<div class="header__top__left__lang">
+								<div class="header__top__left__lang__icon">
+									<img src="./assets/icons/az.png" alt="" />
+								</div>
+								<div class="header__top__left__lang__name">Azərbaycan</div>
+								<div class="header__top__left__lang__arrow">
+									<i class="fa fa-angle-down" aria-hidden="true"></i>
+								</div>
+								<div class="header__top__left__lang__hover">
+									<div class="header__top__left__lang">
+										<div class="header__top__left__lang__icon">
+											<img src="./assets/icons/rus.png" alt="" />
+										</div>
+										<div class="header__top__left__lang__name">Azərbaycan</div>
 									</div>
-									<div class="header__top__left__lang__name">Azərbaycan</div>
-								</div>
-								<div class="header__top__left__lang">
-									<div class="header__top__left__lang__icon">
-										<img src="./assets/icons/eng.png" alt="" />
+									<div class="header__top__left__lang">
+										<div class="header__top__left__lang__icon">
+											<img src="./assets/icons/eng.png" alt="" />
+										</div>
+										<div class="header__top__left__lang__name">Azərbaycan</div>
 									</div>
-									<div class="header__top__left__lang__name">Azərbaycan</div>
+								</div>
+							</div>
+							<div class="header__top__left__currency">
+								<div class="header__top__left__currency__name">AZN</div>
+								<div class="header__top__left__currency__icon">₼</div>
+								<div class="header__top__left__lang__arrow">
+									<i class="fa fa-angle-down" aria-hidden="true"></i>
+								</div>
+								<div class="header__top__left__currency__hover">
+									<div class="header__top__left__currency">
+										<div class="header__top__left__currency__name">USD</div>
+										<div class="header__top__left__currency__icon">$</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="header__top__left__currency">
-							<div class="header__top__left__currency__name">AZN</div>
-							<div class="header__top__left__currency__icon">₼</div>
-							<div class="header__top__left__lang__arrow">
-								<i class="fa fa-angle-down" aria-hidden="true"></i>
-							</div>
-							<div class="header__top__left__currency__hover">
-								<div class="header__top__left__currency">
-									<div class="header__top__left__currency__name">USD</div>
-									<div class="header__top__left__currency__icon">$</div>
+						<div class="header__top__right">
+							<ul class="header__top__right__links">
+								<div class="header__top__right__link">
+									<a href="">Mənim Hesabım</a>
 								</div>
-							</div>
-						</div>
-					</div>
-					<div class="header__top__right">
-						<ul class="header__top__right__links">
-							<div class="header__top__right__link">
-								<a href="">Mənim Hesabım</a>
-							</div>
-                     <?php
-                        if(isset($_SESSION["user_email"])) {?>
-                        	<div class="header__top__right__link">
-                              <a onclick="return confirm('Çıxış etmək istədiyinizdən əminsiniz?')" href="./server/process.php?pros=exit">Çıxış</a>
-                           </div>
-                        <?php
-                        } else {?>
-                        	<div class="header__top__right__link">
-                              <a href="./login">Daxil ol</a>
-                           </div>
-                        <?php
-                        }
-                     ?>
-						
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="header__center container">
-				<div class="header__center__left">
-					<div class="main-search-input-wrap">
-						<div class="main-search-input fl-wrap">
-							<div class="main-search-input-item">
-								<input
-									type="text"
-									value=""
-									placeholder="Kitab və ya müəəlif adı..."
-								/>
-							</div>
-							<button class="main-search-button">Axtar</button>
+								<?php
+									if(isset($_SESSION["user_email"])) {?>
+										<div class="header__top__right__link">
+											<a onclick="return confirm('Çıxış etmək istədiyinizdən əminsiniz?')" href="./server/process.php?pros=exit">Çıxış</a>
+										</div>
+									<?php
+									} else {?>
+										<div class="header__top__right__link">
+											<a href="./login">Daxil ol</a>
+										</div>
+									<?php
+									}
+								?>
+							
+							</ul>
 						</div>
 					</div>
 				</div>
-				<div class="header__center__logo">
-					<img src="assets/images/5.png" alt="" />
+				<div class="header__center container">
+					<div class="header__center__left">
+						<div class="main-search-input-wrap">
+							<div class="main-search-input fl-wrap">
+								<div class="main-search-input-item">
+									<input
+										type="text"
+										value=""
+										placeholder="Kitab və ya müəəlif adı..."
+									/>
+								</div>
+								<button class="main-search-button">Axtar</button>
+							</div>
+						</div>
+					</div>
+					<div class="header__center__logo">
+						<img src="assets/images/5.png" alt="" />
+					</div>
+					<div class="header__center__right">
+						<a title="Sevimlilər">
+							<span><i class="fa fa-book" aria-hidden="true"></i></span>
+						</a>
+					</div>
 				</div>
-				<div class="header__center__right">
-					<a title="Sevimlilər">
-						<span><i class="fa fa-book" aria-hidden="true"></i></span>
-					</a>
-				</div>
-			</div>
 
-			<?php
-				include "./layouts/navbar.php"
-			?>
-			<div class="header__body">
-				<div class="swiper mySwiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<img src="assets/images/bookbg1.png" alt="" />
-							<div class="carusel__box">
-								<div class="carusel__title">
-									Oxumağa kitab seçə bilmirsən? Ya istədiyin kitabı tapa
-									bilmirsən?
-								</div>
-								<div class="carusel__desc">
-									O zaman bazasında 50 mindən çox kitab olan
-									<span>SƏMA</span> kitabxanası sənin xidmətindədir
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<img src="assets/images/bookbg2.png" alt="" />
-							<div class="carusel__box">
-								<div class="carusel__title sectit">
-									Kitabxanada vaxt itirməkdən bezmisən, ya kitab mağazalarında
-									büdcənə uyğun olmayan kitablara pul xərcləməkdən yorulmusan?
-								</div>
-								<div class="carusel__desc seccas">
-									<span>SƏMA</span> kitabxanası hər zaman yanındadır!
+				<?php
+					include "./layouts/navbar.php"
+				?>
+				<div class="header__body">
+					<div class="swiper mySwiper">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<img src="assets/images/bookbg1.png" alt="" />
+								<div class="carusel__box">
+									<div class="carusel__title">
+										Oxumağa kitab seçə bilmirsən? Ya istədiyin kitabı tapa
+										bilmirsən?
+									</div>
+									<div class="carusel__desc">
+										O zaman bazasında 50 mindən çox kitab olan
+										<span>SƏMA</span> kitabxanası sənin xidmətindədir
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="swiper-slide">
-							<img src="assets/images/bookbg4.jpg" alt="" />
-							<div class="carusel__box">
-								<div class="carusel__title sectit">
-									Tələbəsən? Dissertasiya, Sərbəst iş, Kurs işləri arasında itib
-									batmısan və başlamaq üçün ip ucu tapa bilmirsən?
+							<div class="swiper-slide">
+								<img src="assets/images/bookbg2.png" alt="" />
+								<div class="carusel__box">
+									<div class="carusel__title sectit">
+										Kitabxanada vaxt itirməkdən bezmisən, ya kitab mağazalarında
+										büdcənə uyğun olmayan kitablara pul xərcləməkdən yorulmusan?
+									</div>
+									<div class="carusel__desc seccas">
+										<span>SƏMA</span> kitabxanası hər zaman yanındadır!
+									</div>
 								</div>
-								<div class="carusel__desc seccas">
-									<span>SƏMA</span> kitabxanasına bir göz gəzdir
+							</div>
+							<div class="swiper-slide">
+								<img src="assets/images/bookbg4.jpg" alt="" />
+								<div class="carusel__box">
+									<div class="carusel__title sectit">
+										Tələbəsən? Dissertasiya, Sərbəst iş, Kurs işləri arasında itib
+										batmısan və başlamaq üçün ip ucu tapa bilmirsən?
+									</div>
+									<div class="carusel__desc seccas">
+										<span>SƏMA</span> kitabxanasına bir göz gəzdir
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+			<?php
+			} else {
+				include "./layouts/navbar.php";
+			}
+		?>

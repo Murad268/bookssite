@@ -98,7 +98,7 @@
                include "./authors/index.php";
             } elseif($_GET["page"]=="languages") {
                include "./langs/index.php";
-            } elseif($_GET["page"]=="genres") {
+            } elseif($_GET["page"]=="books") {
                include "./genres/index.php";
             } elseif($_GET["page"]=="classes") {
                include "./classes/index.php";

@@ -75,8 +75,10 @@
 				
 		</script>
 		<?php
-			if($_GET["q"]) {
-				echo '<script>scrollToElement(myElement);</script>';
+			if(isset($_GET["q"])) {
+				if($_GET["q"]) {
+					echo '<script>scrollToElement(myElement);</script>';
+				}
 			}
 		?>
 	</body>

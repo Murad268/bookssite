@@ -430,6 +430,7 @@ table {
 
 .interesting__wrapper {
    margin-top: 30px;
+   margin-bottom: 30px;
    display: grid;
    grid-template-columns: repeat(5, 1fr);
    grid-gap: 30px;
@@ -957,4 +958,27 @@ table {
    margin: 10px auto;
    text-align: center;
    color: black;
+ }
+
+
+
+ .books__content__title {
+   text-align: center;
+   font-family: Bangers;
+   font-size: 30px;
+   margin: 30px;
+ }
+
+
+ .manual {
+   margin: 30px;
+   text-align: left;
+   font-size: 30px;
+ }
+
+ .manual a {
+   text-decoration: none;
+ }
+ .manual .interesting__book__raiting {
+
  }

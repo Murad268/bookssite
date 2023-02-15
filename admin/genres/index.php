@@ -20,12 +20,12 @@
    }
    $sayfalamaIcinButonSayisi = 2;
    $sayfaBasinaGosterilecek = 5;
-   $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM genres $s");
+   $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM books $s");
    $toplamKayitSayisiSorgusu->execute();
    $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
    $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
    $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
-   $getGenres = $dbh->prepare("SELECT * FROM genres $s LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
+   $getGenres = $dbh->prepare("SELECT * FROM books $s LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
    $getGenres->execute();
    $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 ?>

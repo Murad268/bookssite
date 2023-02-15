@@ -104,6 +104,7 @@
                         <div class="mb-3"> 
                            <input type="text" name="cat_name" class="form-control" id="exampleInputEmail1"
                                  aria-describedby="emailHelp" placeholder="Kateqoriya adı">
+                           <input type="text" class="mt-3 form-control" name="slug" placeholder="slug">
                         </div>
                         <button name="add__cat" type="submit" class="btn btn-primary">Əlavə et</button>
                      </form>

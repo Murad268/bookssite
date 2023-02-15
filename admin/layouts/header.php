@@ -30,7 +30,7 @@
    $getCategories->execute();
    $categories = $getCategories->fetchAll(PDO::FETCH_ASSOC);
 
-   $getGenres = $dbh->prepare("SELECT * FROM genres");
+   $getGenres = $dbh->prepare("SELECT * FROM books");
    $getGenres->execute();
    $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 
