@@ -35,7 +35,7 @@ if (isset($_POST['registration'])) {
                $mail->Host       = 'smtp.mail.ru';                     //Set the SMTP server to send through
                $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
                $mail->Username   = 'agamedov94@mail.ru';                     //SMTP username
-               $mail->Password   = 'jCvUUBaSJ4pBWtunQngh';                               //SMTP password
+               $mail->Password   = '';                               //SMTP password
                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
                $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
                //Recipients
@@ -104,15 +104,110 @@ if(isset($_POST['searchInBooks'])) {
    $page = $_POST["page"];
    $cat = $_POST["cat"];
    $prev_url = $_SERVER['HTTP_REFERER'];
-   $search = seo($_POST["search"]);
-   $lang_id = seo($_POST["lang_id"]);
-   $genre_id = seo($_POST["genre_id"]);
+
+   if(!empty($_POST["search"])) {
+      $search = seo($_POST["search"]);
+   } else {
+      $search=seo($_POST["searching"]);
+   }
+   if(!empty($_POST["lang_id"])) {
+      $lang_id = seo($_POST["lang_id"]);
+   } else {
+      $lang_id=seo($_POST["lang"]);
+   }
+   if(!empty($_POST["genre_id"])) {
+      $genre_id = seo($_POST["genre_id"]);
+   } else {
+      $genre_id=seo($_POST["genre"]);
+   }
+
    if(!empty($prev_url)) {
       header("Location:  ../?page=$page&category=$cat&search=$search&genre_id=$genre_id&lang_id=$lang_id");
    }
 }
 
+if(isset($_POST['searchInUn'])) {
+   $page = $_POST["page"];
+   $cat = $_POST["cat"];
+   $prev_url = $_SERVER['HTTP_REFERER'];
+   $search = seo($_POST["search"]);
+  
+   if(!empty($_POST["search"])) {
+      $search = seo($_POST["search"]);
+   } else {
+      $search=seo($_POST["searching"]);
+   }
+   
+   if(!empty($_POST["type_id"])) {
+      $type_id = seo($_POST["type_id"]);
+   } else {
+      $type_id=seo($_POST["type"]);;
+   }
+
+   if(!empty($_POST["lang_id"])) {
+      $lang_id = seo($_POST["lang_id"]);
+   } else {
+      $lang_id=seo($_POST["lang"]);
+   }
+
+   if(!empty($_POST["spec_id"])) {
+      $spec_id = seo($_POST["spec_id"]);
+   } else {
+      $spec_id=seo($_POST["spec"]);
+   }
+
+   if(!empty($_POST["filter"])) {
+      $filter = seo($_POST["filter"]);
+   } else {
+      $filter=seo($_POST["filtering"]);
+   }
+ 
+   if(!empty($prev_url)) {
+      header("Location:  ../?page=$page&category=$cat&search=$search&type_id=$type_id&lang_id=$lang_id&spec_id=$spec_id&filter=$filter");
+   }
+}
 
 
+
+if(isset($_POST['searchInManual'])) {
+   $page = $_POST["page"];
+   $cat = $_POST["cat"];
+   $prev_url = $_SERVER['HTTP_REFERER'];
+   $search = seo($_POST["search"]);
+  
+   if(!empty($_POST["search"])) {
+      $search = seo($_POST["search"]);
+   } else {
+      $search=seo($_POST["searching"]);
+   }
+   
+   if(!empty($_POST["sub_id"])) {
+      $sub_id = seo($_POST["sub_id"]);
+   } else {
+      $sub_id=seo($_POST["subject"]);;
+   }
+
+   if(!empty($_POST["lang_id"])) {
+      $lang_id = seo($_POST["lang_id"]);
+   } else {
+      $lang_id=seo($_POST["lang"]);
+   }
+
+   if(!empty($_POST["class_id"])) {
+      $class_id = seo($_POST["class_id"]);
+   } else {
+      $class_id=seo($_POST["class"]);
+   }
+
+   if(!empty($_POST["filter"])) {
+      $filter = seo($_POST["filter"]);
+   } else {
+      $filter=seo($_POST["filtering"]);
+   }
+ 
+   if(!empty($prev_url)) {
+      header("Location:  ../?page=$page&category=$cat&search=$search&sub_id=$sub_id&lang_id=$lang_id&class_id=$class_id&filter=$filter");
+   }
+}
 ?>
 
