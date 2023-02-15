@@ -26,54 +26,7 @@
    $getCategory->execute([$_GET["category"]]);
    $category = $getCategory->fetch(PDO::FETCH_ASSOC);
 
-   if(!empty($_GET["search"])) {
-      $q = $_GET["search"];
-      $s = "AND book_name LIKE '%$q%'";
-   } else {
-      $s = "";
-   }
-   if(!empty($_GET["lang_id"])) {
-      $id = $_GET["lang_id"];
-      $l = "AND  lang_id = $id";
-   } else {
-      $l= "";
-   }
-   if(!empty($_GET["genre_id"])) {
-      $id = $_GET["genre__id"];
-      $g = "AND  genre__id = $id";
-   } else {
-      $g = "";
-   }
-
-
-   $current_url = 'http';
-   if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-      $current_url .= "s";
-   }
-   $current_url .= "://";
-   if($_SERVER['SERVER_PORT'] != '80') {
-      $current_url .= $_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
-   } else {
-      $current_url .= $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-   }
-
-
-   $sayfalamaIcinButonSayisi = 2;
-   $sayfaBasinaGosterilecek = 5;
-   $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g");
-   $toplamKayitSayisiSorgusu->execute([$category["id"]]);
-   $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
-   $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
-   $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
- 
-
-
-
-
-   $getBooks = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
-   $getBooks->execute([$category["id"]]);
-   $books = $getBooks->fetchAll(PDO::FETCH_ASSOC);
-
+   
 
  
 
@@ -88,7 +41,49 @@
    </h3>
 
    <?php
-      if ($_GET["category"] == "books") { ?>
+      if ($_GET["category"] == "books") { 
+         $sayfalamaKosulu = "&page=".$page."&category=$cat";
+         if(isset($_GET["search"])) {
+            $s = $_GET["search"];
+            $l = $_GET["lang_id"];
+            $g = $_GET["genre_id"];
+            $sayfalamaKosulu .= "&search=$s&genre_id=$g&lang_id=$l";
+         }
+         if(!empty($_GET["search"])) {
+            $q = $_GET["search"];
+            $s = "AND book_name LIKE '%$q%'";
+         } else {
+            $s = "";
+         }
+         if(!empty($_GET["lang_id"])) {
+            $id = $_GET["lang_id"];
+            $l = "AND  lang_id = $id";
+         } else {
+            $l= "";
+         }
+         if(!empty($_GET["genre_id"])) {
+            $id = $_GET["genre__id"];
+            $g = "AND  genre__id = $id";
+         } else {
+            $g = "";
+         }
+      
+      
+         
+      
+      
+         $sayfalamaIcinButonSayisi = 2;
+         $sayfaBasinaGosterilecek = 1;
+         $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g");
+         $toplamKayitSayisiSorgusu->execute([$category["id"]]);
+         $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
+         $sayfalamayBaslayacaqKayotSayisi = ($pagenumber*$sayfaBasinaGosterilecek) - $sayfaBasinaGosterilecek;
+         $bulunanSafyaSayisi = ceil($toplamKayitSayisi/$sayfaBasinaGosterilecek);
+          
+         $getBooks = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ?  $s $l $g LIMIT $sayfalamayBaslayacaqKayotSayisi, $sayfaBasinaGosterilecek");
+         $getBooks->execute([$category["id"]]);
+         $books = $getBooks->fetchAll(PDO::FETCH_ASSOC);
+      ?>
          <?php
          if (count($books) < 1) { ?>
             <div class="no__book">
@@ -205,6 +200,33 @@
             ?>
 
          </div>
+         <nav style="margin: 20px auto; width: max-content" aria-label="Page navigation example">
+         <?php
+               if($bulunanSafyaSayisi>1) {?>
+                  <div class="paginationWrapper">
+                     <nav aria-label="Page navigation example ">
+                        <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="<? echo "?".$sayfalamaKosulu.'&pagenumber=1'?>">&laquo;</a></li>
+                        <?php
+                           for($i = $pagenumber-$sayfalamaIcinButonSayisi; $i <= $pagenumber+$sayfalamaIcinButonSayisi; $i++) {
+                              if(($i > 0) and ($i <= $bulunanSafyaSayisi)) {
+                                 $curr = $i;
+                              if($pagenumber == $i) {
+                                 echo "<li style=\"cursor: pointer\" class=\"page-item\"><div style=\"background: black; color: white\" class=\"page-link\">$curr</div></li>";
+                              } else {
+                                 echo "<li class=\"page-item\"><a class=\"page-link\" href=\"?$sayfalamaKosulu&pagenumber=$curr\">$curr</a></li>";
+                              }
+                           }
+                        }
+                        ?>
+                           <li class="page-item"><a class="page-link"  href="<?="?".$sayfalamaKosulu."&"."pagenumber=".$bulunanSafyaSayisi?>">&raquo;</a></li>
+                        </ul>
+                     </nav>
+                  </div>
+               <?php
+               }
+            ?>
+      </nav>
 
       <?php
       } elseif ($_GET["category"] == "university") { ?>
