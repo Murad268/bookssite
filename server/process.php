@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/autoload.php';
 include './functions.php';
 include './connect.php';
+include './parameters.php';
 if (isset($_POST['registration'])) {
    $email = seo($_POST["email"]);
    $name = seo($_POST["name"]);
@@ -207,6 +208,59 @@ if(isset($_POST['searchInManual'])) {
  
    if(!empty($prev_url)) {
       header("Location:  ../?page=$page&category=$cat&search=$search&sub_id=$sub_id&lang_id=$lang_id&class_id=$class_id&filter=$filter");
+   }
+}
+
+
+if(isset($_POST["add_comment"])) {
+   $comment = seo($_POST["comment"]);
+ 
+   if(empty($comment)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $postComment = $dbh->prepare('INSERT INTO comments (user_id, date, comment) VALUES (?,?,?)');
+   $time = time();
+   $postComment->execute([$user_id, $time, $comment]);
+   if($postComment->rowCount() > 0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+
+if(isset($_GET["compross"])) {
+   if($_GET["compross"] == "delete") {
+      $id = seo($_GET["id"]);
+      if(empty($id)) {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+      $getUComment = $dbh->prepare("SELECT * FROM comments WHERE id = ?");
+      $getUComment->execute([$id]);
+      $comment = $getUComment->fetch(PDO::FETCH_ASSOC);
+      $getUser = $dbh->prepare("SELECT * FROM users WHERE id = ?");
+      $getUser->execute([$comment["user_id"]]);
+      $user = $getUser->fetch(PDO::FETCH_ASSOC);
+      if($user["email"]==$user_email) {
+         $deleteFetch = $dbh->prepare("DELETE FROM comments WHERE id = ?");
+         $deleteFetch->execute([$id]);
+         if($deleteFetch->rowCount() > 0) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+         }
+      } else {
+         header('Location: ' . $_SERVER['HTTP_REFERER']);
+      }
+   } elseif($_GET["compross"] == "addraiting") {
+         
+         if(!isset($_GET["raiting"])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER'] );
+            if(empty($_GET["raiting"])) {
+               header('Location: ' . $_SERVER['HTTP_REFERER'] );
+            }
+         } else {
+            $raiting = seo($_GET["raiting"]);
+            $id = seo($_GET["id"]);
+            $updateBooks = $dbh->prepare("UPDATE books SET stars=stars+?, countofb=countofb+1 WHERE id=?");
+            $updateBooks->execute([$raiting, $id]);
+         }
    }
 }
 ?>

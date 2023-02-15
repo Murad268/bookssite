@@ -7,5 +7,6 @@
       $user_email = $adminInfo["email"];
       $user_name = $adminInfo["name"];
       $user_surname = $adminInfo["surname"];
+      $user_id = $adminInfo["id"];
    }
 ?>

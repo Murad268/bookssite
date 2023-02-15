@@ -59,6 +59,15 @@
 	}
 
 	navbarPosition('.navbar', 'navbar__active')
+
+	document.querySelectorAll(".stars i").forEach(item => {
+		item.addEventListener("click", () => {
+			const url = new URL(window.location.href);
+			const id = url.searchParams.get("book_id");
+			document.querySelector('.get_url').setAttribute('href', "./server/process.php?compross=addraiting&raiting="+item.getAttribute("data-val")+"&id="+id);
+		})
+	})
+
 	const stars = document.querySelectorAll('.stars i')
 	const starsNone = document.querySelector('.rating-box')
 

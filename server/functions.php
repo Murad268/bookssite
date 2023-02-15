@@ -39,4 +39,6 @@
 }
 
 
-?>
+function dateR($unix_timestamp) {
+      return date('Y-m-d H:i:s', $unix_timestamp);
+}

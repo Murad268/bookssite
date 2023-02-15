@@ -1,5 +1,6 @@
 <?php
    include './server/functions.php';
+   include './server/parameters.php';
    if(isset($_GET["book_id"])) {
       $id = seo( $_GET["book_id"]);
       $getBook = $dbh->prepare("SELECT * FROM books WHERE id = ?");
@@ -9,6 +10,10 @@
       $getAuthor = $dbh->prepare("SELECT * FROM authors WHERE id = ?");
       $getAuthor->execute([$book["author_id"]]);
       $author = $getAuthor->fetch(PDO::FETCH_ASSOC);
+
+      $getComments = $dbh->prepare("SELECT * FROM comments");
+      $getComments->execute();
+      $comments = $getComments->fetchAll(PDO::FETCH_ASSOC);
    } else {?>
       <div style="margin-left: 130px; font-size: 40px">
          error
@@ -23,19 +28,19 @@
    <div class="container">
       <div class="book__top">
          <div class="book__top__img">
-            <img src="assets/images/image (3).png" alt="" />
+            <img src="./admin/assets/img/books/<?php echo $book["src"]?>" alt="" />
             <a href="" download class="book__download"> kitabı yüklə </a>
             <div class="book__top__add__star">
                <div class="rating-box">
                   <div class="stars">
-                     <i class="fa-solid fa-star"></i>
-                     <i class="fa-solid fa-star"></i>
-                     <i class="fa-solid fa-star"></i>
-                     <i class="fa-solid fa-star"></i>
-                     <i class="fa-solid fa-star"></i>
+                     <i data-val="1" class="fa-solid fa-star"></i>
+                     <i data-val="2" class="fa-solid fa-star"></i>
+                     <i data-val="3" class="fa-solid fa-star"></i>
+                     <i data-val="4" class="fa-solid fa-star"></i>
+                     <i data-val="5" class="fa-solid fa-star"></i>
                   </div>
                </div>
-               <a href="" class="btn btn-dark raiting-send">
+               <a href="" class="get_url btn btn-dark raiting-send">
                   <i class="fa fa-paper-plane" aria-hidden="true"></i>
                </a>
             </div>
@@ -76,33 +81,42 @@
                </div>
             </div>
             <div class="book__comments">
-               <div class="book__comment">
-                  <div class="book__comment__wrapper">
-                     <div class="book__comment__author">Murad Agamedov</div>
-                     <div class="book__comment__date">2 dekabr 2022</div>
-                  </div>
-                  <div class="book__comment__comment">
-                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                     Vitae saepe necessitatibus nulla incidunt reiciendis, illo
-                     iure hic voluptates minima quaerat.
-                  </div>
-               </div>
-               <div class="book__comment">
-                  <div class="book__comment__wrapper">
-                     <div class="book__comment__author">Murad Agamedov</div>
-                     <div class="book__comment__date">2 dekabr 2022</div>
-                  </div>
-                  <div class="book__comment__comment">
-                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                     Vitae saepe necessitatibus nulla incidunt reiciendis, illo
-                     iure hic voluptates minima quaerat.
-                  </div>
-               </div>
+               <?php
+                  if(count($comments) <= 0) {?>
+                     <div class="no-comment">
+                        Kitaba heç bir şərh verilməyib
+                     </div>
+                  <?php
+                  }
+                  foreach($comments as $comment) {
+                     $getUser = $dbh->prepare("SELECT * FROM users WHERE id = ?");
+                     $getUser->execute([$comment["user_id"]]);
+                     $user = $getUser->fetch(PDO::FETCH_ASSOC)?>
+                      <div class="book__comment">
+                        <div class="book__comment__wrapper">
+                           <div class="book__comment__author"><?php echo $user["name"].' '.$user['surname']?> <?php
+                              if($comment["user_id"]==$user_id) {?>
+                                 <a onclick="return confrim('Şərhinizi silmək istədiyinizdən əminsinizmi?')" class="text-danger" href="./server/process.php?compross=delete&id=<?php echo $comment["id"]?>">sil</a>
+                              <?php
+                              }
+                           ?></div>
+                           <div class="book__comment__date"><?php echo dateR($comment["date"])?></div>
+                        </div>
+                        <div class="book__comment__comment">
+                          <?php
+                           echo $comment["comment"]
+                          ?>
+                        </div>
+                     </div>
+                  <?php
+                  }
+               ?>
+           
             </div>
             <div class="book__comment__add">
-               <form class="" action="">
-                  <textarea placeholder="kitab haqqında nə düşünürsüz?" class="form-control" name="" id=""></textarea>
-                  <button>şərh əlavə et</button>
+               <form method="post" action="./server/process.php">
+                  <textarea placeholder="kitab haqqında nə düşünürsüz?" class="form-control" name="comment" id=""></textarea>
+                  <button name="add_comment">şərh əlavə et</button>
                </form>
             </div>
          </div>
