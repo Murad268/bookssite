@@ -68,6 +68,16 @@
 		})
 	})
 
+	
+	document.querySelectorAll(".manstars i").forEach(item => {
+		item.addEventListener("click", () => {
+			const url = new URL(window.location.href);
+			const id = url.searchParams.get("manual_id");
+			document.querySelector('.get_url').setAttribute('href', "./server/process.php?manpros=addraiting&raiting="+item.getAttribute("data-val")+"&id="+id);
+		})
+	})
+
+
 	const stars = document.querySelectorAll('.stars i')
 	const starsNone = document.querySelector('.rating-box')
 

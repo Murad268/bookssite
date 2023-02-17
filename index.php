@@ -9,6 +9,8 @@
 				require "./books/index.php";
 			} elseif($_GET["page"]=="book") {
 				require "./book/index.php";
+			} elseif($_GET["page"]=="manual") {
+				require "./manual/index.php";
 			}
 		?>
 

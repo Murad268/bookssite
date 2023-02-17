@@ -1,17 +1,12 @@
 <?php
 include './server/functions.php';
 include './server/parameters.php';
-if (isset($_GET["book_id"])) {
-   $id = seo($_GET["book_id"]);
-   $getBook = $dbh->prepare("SELECT * FROM books WHERE id = ?");
+if (isset($_GET["manual_id"])) {
+   $id = seo($_GET["manual_id"]);
+   $getBook = $dbh->prepare("SELECT * FROM manuals WHERE id = ?");
    $getBook->execute([$id]);
    $book = $getBook->fetch(PDO::FETCH_ASSOC);
-
-   $getAuthor = $dbh->prepare("SELECT * FROM authors WHERE id = ?");
-   $getAuthor->execute([$book["author_id"]]);
-   $author = $getAuthor->fetch(PDO::FETCH_ASSOC);
-
-   $getComments = $dbh->prepare("SELECT * FROM comments");
+   $getComments = $dbh->prepare("SELECT * FROM manual_comment");
    $getComments->execute();
    $comments = $getComments->fetchAll(PDO::FETCH_ASSOC);
 } else { ?>
@@ -19,7 +14,6 @@ if (isset($_GET["book_id"])) {
       error
    </div>
 <?php
-
    exit;
 }
 
@@ -28,16 +22,16 @@ if (isset($_GET["book_id"])) {
    <div class="container">
       <div class="book__top">
          <div class="book__top__img">
-            <img src="./admin/assets/img/books/<?php echo $book["src"] ?>" alt="" />
+            <img src="./admin/assets/img/manuals/<?php echo $book["src"] ?>" alt="" />
             <a href="" download class="book__download"> kitabı yüklə </a>
             <?php
-            $getStar = $dbh->prepare("SELECT * FROM stars WHERE user_id = ? AND goods_id = ?");
-            $getStar->execute([$user_id, $_GET["book_id"]]);
+            $getStar = $dbh->prepare("SELECT * FROM manual_stars WHERE user_id = ? AND goods_id = ?");
+            $getStar->execute([$user_id, $_GET["manual_id"]]);
             $star = $getStar->fetch(PDO::FETCH_ASSOC);
             if (!$getStar->rowCount() > 0) { ?>
                <div class="book__top__add__star">
                   <div class="rating-box">
-                     <div class="stars">
+                     <div class="stars manstars">
                         <i data-val="1" class="fa-solid fa-star"></i>
                         <i data-val="2" class="fa-solid fa-star"></i>
                         <i data-val="3" class="fa-solid fa-star"></i>
@@ -54,7 +48,7 @@ if (isset($_GET["book_id"])) {
                if ($star["star_count"] <= 1) {
                   $text = '
                               <div class="interesting__book__raiting">
-                                 <i class="fa fa-star" aria-hidden="true"></i>
+                                 <i class="fa fa-star active" aria-hidden="true"></i>
                               </div>
                               ';
                } elseif ($star["star_count"] <= 2) {
@@ -100,7 +94,7 @@ if (isset($_GET["book_id"])) {
                   <div class="rating-box">
                      <div class="all_stars">
                         <?php
-                        echo $text;
+                           echo $text;
                         ?>
                      </div>
                   </div>
@@ -110,7 +104,7 @@ if (isset($_GET["book_id"])) {
                </div>
                <div class="book__top__add__star raiting-not">
                   <div class="rating-box">
-                     <div class="stars">
+                     <div class="stars manstars">
                         <i data-val="1" class="fa-solid fa-star"></i>
                         <i data-val="2" class="fa-solid fa-star"></i>
                         <i data-val="3" class="fa-solid fa-star"></i>
@@ -127,39 +121,39 @@ if (isset($_GET["book_id"])) {
             ?>
          </div>
          <div class="book__top__right">
-            <div class="book__top__author"><?php echo $author["author_name"] ?></div>
-            <div class="book__top__name"><?php echo $book["book_name"] ?></div>
+            <div class="book__top__author"><?php echo $book["authors"] ?></div>
+            <div class="book__top__name"><?php echo $book["name"] ?></div>
             <?php
-               $star;
-               $text;
-               if ($book["countofb"] == 0) {
-                  $star = "<div class='no-star'>Hələ ki, heç bir istifadəçi bu kitaba qiymət verməyib</div>";
-                  $text = $star;
-               } else {
-                  $star = $book["stars"] / $book["countofb"];
-                  if ($star <= 1) {
-                     $text = '
+            $star;
+            $text;
+            if ($book["countofb"] == 0) {
+               $star = "<div class='no-star'>Hələ ki, heç bir istifadəçi bu kitaba qiymət verməyib</div>";
+               $text = $star;
+            } else {
+               $star = $book["stars"] / $book["countofb"];
+               if ($star <= 1) {
+                  $text = '
                               <div class="interesting__book__raiting">
-                                 <i class="fa fa-star active" aria-hidden="true"></i>
-                              </div>
-                              ';
-                  } elseif ($star <= 2) {
-                     $text = '
-                              <div class="interesting__book__raiting">
-                                 <i class="fa fa-star" aria-hidden="true"></i>
                                  <i class="fa fa-star" aria-hidden="true"></i>
                               </div>
                               ';
-                  } elseif ($star <= 3) {
-                     $text = '
+               } elseif ($star <= 2) {
+                  $text = '
                               <div class="interesting__book__raiting">
-                                 <i class="fa fa-star" aria-hidden="true"></i>
                                  <i class="fa fa-star" aria-hidden="true"></i>
                                  <i class="fa fa-star" aria-hidden="true"></i>
                               </div>
                               ';
-                  } elseif ($star <= 4) {
-                     $text = '
+               } elseif ($star <= 3) {
+                  $text = '
+                              <div class="interesting__book__raiting">
+                                 <i class="fa fa-star" aria-hidden="true"></i>
+                                 <i class="fa fa-star" aria-hidden="true"></i>
+                                 <i class="fa fa-star" aria-hidden="true"></i>
+                              </div>
+                              ';
+               } elseif ($star <= 4) {
+                  $text = '
                               <div class="interesting__book__raiting">
                                  <i class="fa fa-star" aria-hidden="true"></i>
                                  <i class="fa fa-star" aria-hidden="true"></i>
@@ -168,8 +162,8 @@ if (isset($_GET["book_id"])) {
                        
                               </div>
                               ';
-                  } elseif ($star <= 5) {
-                     $text = '
+               } elseif ($star <= 5) {
+                  $text = '
                               <div class="interesting__book__raiting">
                                  <i class="fa fa-star" aria-hidden="true"></i>
                                  <i class="fa fa-star" aria-hidden="true"></i>
@@ -178,20 +172,15 @@ if (isset($_GET["book_id"])) {
                                  <i class="fa fa-star" aria-hidden="true"></i>
                               </div>
                               ';
-                  }
                }
+            }
             ?>
             <div class="book__top__raiting">
                <?php
                   echo $text;
                ?>
             </div>
-            <div class="book__top__about__author">
-               <div class="book__top__about__author__top">müəllif haqqında:</div>
-               <div class="book__top__about__author__body">
-                  <?php echo $author["author_desc"] ?>
-               </div>
-            </div>
+          
             <div class="book__top__about__book">
                <div class="book__top__about__book__top">kitab haqqında:</div>
                <div class="book__top__about__book__body">
@@ -248,7 +237,7 @@ if (isset($_GET["book_id"])) {
             <div class="book__comment__add">
                <form method="post" action="./server/process.php">
                   <textarea placeholder="kitab haqqında nə düşünürsüz?" class="form-control" name="comment" id=""></textarea>
-                  <button name="add_comment">şərh əlavə et</button>
+                  <button name="manual_comment">şərh əlavə et</button>
                </form>
             </div>
          </div>

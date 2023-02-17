@@ -292,5 +292,69 @@ if(isset($_GET["compross"])) {
          }
    }
 }
-?>
 
+
+if(isset($_POST["manual_comment"])) {
+   $comment = seo($_POST["comment"]);
+   if(empty($comment)) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+   $postComment = $dbh->prepare('INSERT INTO manual_comment (user_id, date, comment) VALUES (?,?,?)');
+   $time = time();
+   $postComment->execute([$user_id, $time, $comment]);
+   if($postComment->rowCount() > 0) {
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
+   }
+}
+
+
+
+
+if(isset($_GET["manpros"])) {
+  if($_GET["manpros"] == "addraiting") {
+  
+         if(!isset($_GET["raiting"])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER'] );
+            if(empty($_GET["raiting"])) {
+               header('Location: ' . $_SERVER['HTTP_REFERER'] );
+            }
+         } else {
+            $raiting = seo($_GET["raiting"]);
+            $id = seo($_GET["id"]);
+            $getStars = $dbh->prepare("SELECT * FROM manual_stars WHERE user_id = ? AND goods_id = ?");
+            $getStars->execute([$user_id, $id]);
+            if(!$getStars->rowCount() > 0) {
+               
+               $insertStar = $dbh->prepare('INSERT INTO manual_stars (user_id, goods_id, star_count) VALUES (?,?,?)');
+               $insertStar->execute([$user_id, $id, $raiting]);
+               if($insertStar -> rowCount() > 0) {
+                  $updateBooks = $dbh->prepare("UPDATE manuals SET stars=stars+?, countofb=countofb+1 WHERE id=?");
+                  $updateBooks->execute([$raiting, $id]);
+                  if($updateBooks->rowCount() > 0) {
+                     header('Location: ' . $_SERVER['HTTP_REFERER'] );
+                  }
+               }
+            } else {
+              
+               $updateStars = $dbh->prepare("UPDATE manual_stars SET user_id=?, goods_id=?, star_count=? WHERE goods_id=? AND user_id=?");
+               $updateStars->execute([$user_id, $id, $raiting, $id, $user_id]);
+               if($updateStars -> rowCount() > 0) {
+                  $getStar = $dbh->prepare("SELECT * FROM manuals WHERE id = ?");
+                  $getStar->execute([$id]);
+                  $star = $getStar->fetch(PDO::FETCH_ASSOC);
+                  if($getStar->rowCount() > 0) {
+                     $updateBooks = $dbh->prepare("UPDATE manuals SET stars=stars-?, countofb=countofb-1 WHERE id=?");
+                     $updateBooks->execute([$star["stars"], $id]);
+                     if($updateBooks->rowCount() > 0) {
+                        $updateBooks = $dbh->prepare("UPDATE manuals SET stars=stars+?, countofb=countofb+1 WHERE id=?");
+                        $updateBooks->execute([$raiting, $id]);
+                        if($updateBooks->rowCount() > 0) {
+                           header('Location: ' . $_SERVER['HTTP_REFERER'] );
+                        }
+                     }
+                  }
+               }
+            }
+         }
+   }
+}

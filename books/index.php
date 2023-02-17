@@ -61,17 +61,17 @@
       }
       if (isset($_GET["filter"])) {
          $f = $_GET["filter"];
-         $sayfalamaKosulu .= "&search=$s&genre_id=$g&lang_id=$l&filter=$f";
+         $sayfalamaKosulu .= "&filter=$f";
          if ($_GET["filter"] == "popular") {
             $fq = "ORDER BY views DESC";
          } elseif ($_GET["filter"] == "likes") {
-            $fq = "ORDER BY views DESC";
+            $fq = "ORDER BY stars/countofb DESC";
          } elseif ($_GET["filter"] == "onsale") {
             $fq = "AND sale=1";
          } elseif ($_GET["filter"] == "popularinonsale") {
             $fq = "AND sale = 1 ORDER BY views DESC";
          } elseif ($_GET["filter"] == "morelikesinonsale") {
-            $fq = "AND sale = 1 ORDER BY views DESC";
+            $fq = "AND sale = 1 ORDER BY stars/countofb DESC";
             // morelikesinonsale
          } elseif ($_GET["filter"] == "fromceaptoexpensive") {
             $fq = "AND sale=1 ORDER BY price ASC";
@@ -255,11 +255,28 @@
             }
          ?>
             <a href=".?page=book&book_id=<?php echo $book["id"]?>" class="interesting__book">
+               <?php
+                  if($book["price"]>1) {?>
+                      <div class="interesting__book__types">
+                        <div class="interesting__book__type">
+                           <?php echo $book["price"]?>
+                        </div>
+                     </div>
+                  <?php
+                  } else {?>
+                    <div class="interesting__book__types">
+                        <div class="interesting__book__type">
+                           pulsuz
+                        </div>
+                     </div>
+                  <?php
+                  }
+               ?>
                <div class="interesting__book__img">
                   <img src="admin/assets/img/books/<?php echo $book["src"] ?>" alt="" />
                </div>
                <?php
-               echo $text;
+                  echo $text;
                ?>
                <div class="interesting__book__author"><?php echo $author["author_name"] ?></div>
                <div class="interesting__book__name"><?php echo $book["book_name"] ?></div>
@@ -333,7 +350,7 @@
       }
       if (isset($_GET["filter"])) {
          $fq = $_GET["filter"];
-         $sayfalamaKosulu .= "&search=$s&spec_id=$g&lang_id=$l&type_id=$t&filter=$fq";
+         $sayfalamaKosulu .= "&search=$s&spec_id=$sp&lang_id=$l&type_id=$t&filter=$fq";
          if ($_GET["filter"] == "popular") {
             $fq = "ORDER BY views DESC";
          } elseif ($_GET["filter"] == "likes") {
@@ -349,21 +366,13 @@
             $fq = "AND sale=1 ORDER BY price ASC";
          } elseif ($_GET["filter"] == "fromexpensivetocheap") {
             $fq = "AND sale=1 ORDER BY price DESC";
-         } elseif ($_GET["filter"] == "newbooks") {
-            $fq = "AND new=1 ORDER BY price DESC";
          }
       } else {
          $fq = "";
       }
-     
-
-
-
-   
-
 
       $sayfalamaIcinButonSayisi = 2;
-      $sayfaBasinaGosterilecek = 1;
+      $sayfaBasinaGosterilecek = 8;
       $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ? $s $l $t $fq $sp");
       $toplamKayitSayisiSorgusu->execute([$category["id"]]);
       $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
@@ -383,8 +392,6 @@
       $getSpec = $dbh->prepare("SELECT * FROM specialties");
       $getSpec->execute();
       $specs = $getSpec->fetchAll(PDO::FETCH_ASSOC);
-
-
       ?>
       
       <div class="books__content__wrapper">
@@ -460,13 +467,10 @@
          </div>
          <div class="mt-3 interesting__wrapper__filter">
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=popular" class="btn btn-primary">Populyarlığa görə sırala</a>
-            <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=likes" class="btn btn-success">Bəyəniyə görə sırala</a>
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=onsale" class="btn btn-danger">Satışdadı</a>
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=popularinonsale" class="btn btn-danger">Satışda olanlar arasında ən populyarları</a>
-            <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=morelikesinonsale" class="btn btn-danger">Satışda olanlar arasında ən çox bəyənilənləri</a>
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=fromceaptoexpensive" class="btn btn-dark">Uzudan bahaya</a>
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=fromexpensivetocheap" class="btn btn-warning">Bahadan ucuza</a>
-            <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=newbooks" class="btn btn-primary">Yeni kitablar</a>
          </div>
          <?php
          if (count($books) < 1) { ?>
@@ -493,69 +497,15 @@
             $getLang = $dbh->prepare("SELECT * FROM language WHERE id = ?");
             $getLang->execute([$book["lang_id"]]);
             $lang = $getLang->fetch(PDO::FETCH_ASSOC);
-            $star;
-            $text;
-
-
-            if ($book["countofb"] == 0) {
-               $star = "<div class='no-star'>Hələ ki, heç bir istifadəçi bu kitaba qiymət verməyib</div>";
-               $text = $star;
-            } else {
-               $star = $book["stars"] / $book["countofb"];
-               if ($star <= 1) {
-                  $text = '
-                                 <div class="interesting__book__raiting">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                 </div>
-                                 ';
-               } elseif ($star <= 2) {
-                  $text = '
-                                 <div class="interesting__book__raiting">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                 </div>
-                                 ';
-               } elseif ($star <= 3) {
-                  $text = '
-                                 <div class="interesting__book__raiting">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                 </div>
-                                 ';
-               } elseif ($star <= 4) {
-                  $text = '
-                                 <div class="interesting__book__raiting">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                        
-                                 </div>
-                                 ';
-               } elseif ($star <= 5) {
-                  $text = '
-                                 <div class="interesting__book__raiting">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                 </div>
-                                 ';
-               }
-            }
+           
         
          ?>
             <div class="manual">
                <a href=""><?php echo $book["name"] ?></a> -
                <span>(<?php echo $type["name"] ?>)</span> -
                <span><?php echo $specialty["name"] ?></span> -
-               <span><?php echo $book["price"] < 2 ? 'pulsuz' : $book["price"] ?></span> -
+               <span><?php echo $book["price"] < 2 ? 'pulsuz' : $book["price"].'AZN' ?></span> -
                <span><?php echo $lang["name"] ?></span> dilində -
-               <?php
-       
-               ?>
             </div>
          <?php
          }
@@ -648,15 +598,9 @@
       } else {
          $fq = "";
       }
-     
-
-
-
-   
-
 
       $sayfalamaIcinButonSayisi = 2;
-      $sayfaBasinaGosterilecek = 1;
+      $sayfaBasinaGosterilecek = 8;
       $toplamKayitSayisiSorgusu = $dbh->prepare("SELECT * FROM $cat WHERE cat__id = ? $s $l $t $c $fq");
       $toplamKayitSayisiSorgusu->execute([$category["id"]]);
       $toplamKayitSayisi = $toplamKayitSayisiSorgusu->rowCount();
@@ -754,9 +698,7 @@
             <a style="font-size: 12px" href="?<?php echo $sayfalamaKosulu ?>&filter=newbooks" class="btn btn-primary">Yeni kitablar</a>
          </div>
       <?php
-      
       if (count($books) < 1) { ?>
-      
          <div class="no__book">
             <div class="alert alert-warning" role="alert">
                Axtarılan tipdə kitab yoxdur və ya bölmə düzənlənir
@@ -820,12 +762,29 @@
                }
             }
          ?>
-            <a class="interesting__book">
+            <a href=".?page=manual&manual_id=<?php echo $book["id"] ?>" class="interesting__book">
+               <?php
+                  if($book["price"]>1) {?>
+                      <div class="interesting__book__types">
+                        <div class="interesting__book__type">
+                           <?php echo $book["price"]?>
+                        </div>
+                     </div>
+                  <?php
+                  } else {?>
+                    <div class="interesting__book__types">
+                        <div class="interesting__book__type">
+                           pulsuz
+                        </div>
+                     </div>
+                  <?php
+                  }
+               ?>
                <div class="interesting__book__img">
                   <img src="admin/assets/img/manuals/<?php echo $book["src"] ?>" alt="" />
                </div>
                <?php
-               echo $text;
+                  echo $text;
                ?>
                <div class="interesting__book__author"><?php echo $book["authors"] ?></div>
                <div class="interesting__book__name"><?php echo $book["name"] ?></div>
