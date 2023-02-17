@@ -11,14 +11,19 @@
 		$popular = false;
 		$liked = false;
 		if (!isset($_GET["q"])) {
+			$toLink = 'last__books';
 			$last = true;
 		} elseif ($_GET["q"] == 'last__books') {
+			$toLink = 'last__books';
 			$last = true;
 		} elseif ($_GET["q"] == 'new__books') {
+			$toLink = 'new__books';
 			$new = true;
 		} elseif ($_GET["q"] == 'most__popular') {
+			$toLink = 'most__popular';
 			$popular = true;
 		} elseif ($_GET["q"] == 'more__liked') {
+			$toLink = 'more__liked';
 			$liked = true;
 		}
 		?>
@@ -43,7 +48,7 @@
 	?>
 	<div class="interesting__wrapper container">
 		<div title="mövcud kateqoriyaya uyğun bütün kitablar" class="inseresting__arrow">
-			<a href=""><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+			<a href="?page=books&category=books&filter=<?php echo $toLink?>"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
 		</div>
 		<?php
 		foreach ($books as $book) {

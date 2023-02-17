@@ -1,7 +1,7 @@
 <nav class="navbar">
    <ul class="navbar__links">
       <li class="navbar__link">
-         <a href="">ANA SƏHİFƏ</a>
+         <a href=".">ANA SƏHİFƏ</a>
       </li>
       <?php
          foreach($categories as $category) {?>

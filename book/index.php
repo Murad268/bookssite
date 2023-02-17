@@ -29,7 +29,7 @@ if (isset($_GET["book_id"])) {
       <div class="book__top">
          <div class="book__top__img">
             <img src="./admin/assets/img/books/<?php echo $book["src"] ?>" alt="" />
-            <a href="" download class="book__download"> kitabı yüklə </a>
+            <a href="./admin/assets/pdfs/books/<?php echo $book['book_pdf']?>" <?php echo $book['sale']==1? "onclick='return confirm(\"Kitabı almaq üçün lazım olan əlaqə vasitələrini yükləmək istəyirsiniz?\")'":""?> download class="book__download"> kitabı yüklə </a>
             <?php
             $getStar = $dbh->prepare("SELECT * FROM stars WHERE user_id = ? AND goods_id = ?");
             $getStar->execute([$user_id, $_GET["book_id"]]);

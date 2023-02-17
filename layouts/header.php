@@ -10,7 +10,7 @@ if (isset($_GET["q"])) {
 	} elseif ($querry == "most__popular") {
 		$q = $q = "ORDER BY views desc";
 	} elseif ($querry == "more__liked") {
-		$q = $q = "ORDER BY views desc";
+		$q = $q = "ORDER BY stars/countofb desc";
 	}
 } else {
 	$q = "ORDER BY id desc";
@@ -65,7 +65,7 @@ $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 	<?php
-	if (!isset($_GET["category"]) AND isset($_GET["page"]) AND $_GET["page"] != "book" AND $_GET["page"] != "manual") { ?>
+	if (!isset($_GET["page"])) { ?>
 		<header class="header">
 			<?php
 			include "./layouts/top.php";
@@ -140,9 +140,7 @@ $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 		</header>
 	<?php
 	} else {
-
 		include "./layouts/top.php";
-
 		include "./layouts/navbar.php";
 	}
 	?>

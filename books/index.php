@@ -78,7 +78,15 @@
          } elseif ($_GET["filter"] == "fromexpensivetocheap") {
             $fq = "AND sale=1 ORDER BY price DESC";
          } elseif ($_GET["filter"] == "newbooks") {
-            $fq = "AND new=1 ORDER BY price DESC";
+            $fq = "AND new=1 ORDER BY id DESC";
+         } elseif ($_GET["filter"] == "last__books") {
+            $fq = "ORDER BY id DESC";
+         } elseif ($_GET["filter"] == "new__books") {
+            $fq = "AND new=1 ORDER BY id DESC";
+         } elseif ($_GET["filter"] == "most__popular") {
+            $fq = "ORDER BY views DESC";
+         } elseif ($_GET["filter"] == "more__liked") {
+            $fq = "ORDER BY  stars/countofb DESC";
          }
       } else {
          $fq = "";
@@ -501,7 +509,7 @@
         
          ?>
             <div class="manual">
-               <a href=""><?php echo $book["name"] ?></a> -
+               <a <?php echo $book['sale']==1? "onclick='return confirm(\"Kitabı almaq üçün lazım olan əlaqə vasitələrini yükləmək istəyirsiniz?\")'":""?> download="" href="./admin/assets/pdfs/uni/<?php echo $book["book_pdf"] ?>"><?php echo $book["name"] ?></a> -
                <span>(<?php echo $type["name"] ?>)</span> -
                <span><?php echo $specialty["name"] ?></span> -
                <span><?php echo $book["price"] < 2 ? 'pulsuz' : $book["price"].'AZN' ?></span> -
