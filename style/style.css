@@ -795,18 +795,24 @@ table {
    margin-top: 10px;
  }
 
- .rating-box .stars {
+ .rating-box .stars, .rating-box .all_stars {
    display: flex;
    align-items: center;
    gap: 15px;
  }
- .stars i {
+ .all_stars {
+   margin-right: 28px;
+ }
+ .stars i, .all_stars i {
    font-size: 15px;
    color: #b5b8b1;
    transition: all 0.2s;
    cursor: pointer;
  }
- .stars i.active {
+ .all_stars i {
+   cursor: default;
+ }
+ .stars i.active, .all_stars i.active {
    color: #ffb851;
    transform: scale(1.2);
  }
@@ -992,4 +998,15 @@ table {
    height: 30px;
    margin-right: 10px;
    font-size: 13px;
+}
+
+
+.raiting-not {
+   display: none;
+}
+.raiting-not-active {
+   display: block;
+}
+.reaiting-have-passive {
+   display: none;
 }

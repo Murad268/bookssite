@@ -91,6 +91,11 @@
 	}
 
 	const myElement = document.querySelector('.interesting__title');
+
+	document.querySelector(".change_raiting").addEventListener("click", () => {
+		document.querySelector(".raiting-not").classList.add("raiting-not-active");
+		document.querySelector(".reaiting-have").classList.add('reaiting-have-passive');
+	})
 </script>
 <?php
 if (isset($_GET["q"])) {

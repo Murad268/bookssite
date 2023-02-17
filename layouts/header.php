@@ -65,7 +65,7 @@ $genres = $getGenres->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 	<?php
-	if (!isset($_GET["category"]) AND $_GET["page"] != "book") { ?>
+	if (!isset($_GET["category"]) AND isset($_GET["page"]) AND $_GET["page"] != "book") { ?>
 		<header class="header">
 			<?php
 			include "./layouts/top.php";

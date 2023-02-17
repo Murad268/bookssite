@@ -211,28 +211,28 @@
             } else {
                $star = $book["stars"] / $book["countofb"];
                if ($star <= 1) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 2) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 3) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 4) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
@@ -240,9 +240,9 @@
                               <i class="fa fa-star" aria-hidden="true"></i>
                   
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 5) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
@@ -250,7 +250,7 @@
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                }
             }
          ?>
@@ -259,7 +259,7 @@
                   <img src="admin/assets/img/books/<?php echo $book["src"] ?>" alt="" />
                </div>
                <?php
-               echo $star;
+               echo $text;
                ?>
                <div class="interesting__book__author"><?php echo $author["author_name"] ?></div>
                <div class="interesting__book__name"><?php echo $book["book_name"] ?></div>
@@ -503,28 +503,28 @@
             } else {
                $star = $book["stars"] / $book["countofb"];
                if ($star <= 1) {
-                  $text = `
+                  $text = '
                                  <div class="interesting__book__raiting">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                  </div>
-                                 `;
+                                 ';
                } elseif ($star <= 2) {
-                  $text = `
+                  $text = '
                                  <div class="interesting__book__raiting">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                  </div>
-                                 `;
+                                 ';
                } elseif ($star <= 3) {
-                  $text = `
+                  $text = '
                                  <div class="interesting__book__raiting">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                  </div>
-                                 `;
+                                 ';
                } elseif ($star <= 4) {
-                  $text = `
+                  $text = '
                                  <div class="interesting__book__raiting">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -532,9 +532,9 @@
                                     <i class="fa fa-star" aria-hidden="true"></i>
                         
                                  </div>
-                                 `;
+                                 ';
                } elseif ($star <= 5) {
-                  $text = `
+                  $text = '
                                  <div class="interesting__book__raiting">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -542,7 +542,7 @@
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                  </div>
-                                 `;
+                                 ';
                }
             }
         
@@ -777,28 +777,28 @@
             } else {
                $star = $book["stars"] / $book["countofb"];
                if ($star <= 1) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 2) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 3) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 4) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
@@ -806,9 +806,9 @@
                               <i class="fa fa-star" aria-hidden="true"></i>
                   
                            </div>
-                           `;
+                           ';
                } elseif ($star <= 5) {
-                  $text = `
+                  $text = '
                            <div class="interesting__book__raiting">
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
@@ -816,7 +816,7 @@
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                            </div>
-                           `;
+                           ';
                }
             }
          ?>
@@ -825,7 +825,7 @@
                   <img src="admin/assets/img/manuals/<?php echo $book["src"] ?>" alt="" />
                </div>
                <?php
-               echo $star;
+               echo $text;
                ?>
                <div class="interesting__book__author"><?php echo $book["authors"] ?></div>
                <div class="interesting__book__name"><?php echo $book["name"] ?></div>
